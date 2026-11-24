@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papan Piket Digital - Kejaksaan Tinggi NTB</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kejati: {
+                            bg: '#f0fdf4',
+                            card: '#ffffff',
+                            primary: '#047857',      /* Vibrant Emerald */
+                            emerald: '#059669',    /* Bright Emerald */
+                            light: '#dcfce7',      /* Very Light Emerald */
+                            border: '#a7f3d0',     /* Soft Mint Border */
+                            gold: '#b45309',       /* Rich Gold Text */
+                            goldbg: '#fef3c7',     /* Gold Accent Fill */
+                            goldaccent: '#f59e0b', /* Gold Highlight */
+                            dark: '#022c22'        /* Deep Forest Text */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulseGlow 2s infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                        'float': 'float 4s ease-in-out infinite',
+                        'badge-bounce': 'badgeBounce 3s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(245, 158, 11, 0.5)' },
+                            '50%': { boxShadow: '0 0 5px rgba(245, 158, 11, 0.1)' }
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-4px)' }
+                        },
+                        badgeBounce: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.05)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Bright & Modern Glassmorphism Display for TV */
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 40%, #e0f2fe 100%);
+        }
+
+        .bright-glass-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.25);
+            box-shadow: 0 4px 20px rgba(4, 120, 87, 0.08);
+        }
+        
+        .bright-day-card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border: 2px solid #a7f3d0;
+            box-shadow: 0 8px 20px -5px rgba(4, 120, 87, 0.08);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bright-day-card.active-day {
+            border: 2.5px solid #f59e0b;
+            background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #065f46 0%, #047857 40%, #b45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .supervisor-row {
+            background: linear-gradient(135deg, #fffbe3 0%, #fef3c7 100%);
+            border: 1.5px solid #f59e0b;
+            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.12);
+        }
+
+        .officer-row {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .officer-row:hover {
+            background: #f0fdf4;
+            border-color: #34d399;
+        }
+
+        /* Custom Scrollbar for Admin Modal */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #059669; border-radius: 4px; }
+    </style>
+</head>
+<body class="text-slate-800 h-screen flex flex-col justify-between font-sans select-none">
+
+    <!-- TOP HEADER -->
+    <header class="w-full px-6 py-3 bright-glass-header z-30 flex-shrink-0">
+        <div class="max-w-[1920px] mx-auto flex items-center justify-between">
+            
+            <!-- Logo & Title Header -->
+            <div class="flex items-center gap-4">
+                <!-- Official Logo Kejaksaan RI -->
+                <div class="relative w-14 h-14 flex-shrink-0 animate-float">
+                    <img 
+                        src="https://www.kejaksaan.go.id/assets/img/webphada.png" 
+                        alt="Logo Kejaksaan RI" 
+                        class="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(4,120,87,0.25)]"
+                        onerror="this.src='https://placehold.co/100x100/047857/ffffff?text=KEJAKSAAN'"
+                    />
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-kejati-primary text-white tracking-wider shadow-sm">KEJAKSAAN RI</span>
+                        <span class="text-xs text-kejati-primary font-extrabold uppercase tracking-widest">Jadwal Penugasan Piket & Informasi Publik</span>
+                    </div>
+                    <h1 id="display-office-name" class="text-xl lg:text-2xl font-black tracking-wide font-outfit gold-gradient-text uppercase leading-none drop-shadow-sm">
+                        KEJAKSAAN TINGGI NUSA TENGGARA BARAT
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Date & Live Clock (WITA) -->
+            <div class="flex items-center gap-5 bg-white px-5 py-2 rounded-2xl border-2 border-kejati-border shadow-sm">
+                <div class="text-right border-r-2 border-kejati-border pr-5">
+                    <div id="clock-day" class="text-base font-black text-kejati-gold uppercase tracking-wider font-outfit leading-tight">Selasa</div>
+                    <div id="clock-date" class="text-xs text-slate-600 font-bold">27 Oktober 2026</div>
+                </div>
+
+                <div class="flex flex-col items-center justify-center">
+                    <div id="clock-time" class="text-2xl lg:text-3xl font-black font-outfit tracking-wider text-kejati-dark drop-shadow-sm">
+                        00:00:00
+                    </div>
+                    <span class="text-[9px] uppercase font-black text-kejati-emerald tracking-widest -mt-0.5">WITA (UTC+8)</span>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA (SPLIT SCREEN LAYOUT) -->
+    <main class="flex-grow p-4 max-w-[1920px] w-full mx-auto flex flex-col lg:flex-row gap-4 overflow-hidden h-full">
+        
+        <!-- LEFT SECTION: 4-DAY DUTY SCHEDULE GRID (Approx 63% Width) -->
+        <section class="lg:w-[63%] flex flex-col h-full">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-user text-kejati-primary text-lg"></i>
+                    <h2 class="text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider">Papan Penugasan Piket 4 Hari</h2>
+                </div>
+                <span class="text-xs font-bold text-slate-500 bg-white/80 px-2.5 py-1 rounded-lg border border-kejati-border">
+                    <i class="fa-solid fa-rotate text-emerald-600 mr-1"></i> Mode Penayangan Layar TV
+                </span>
+            </div>
+
+            <!-- Grid 4 Hari -->
+            <div id="days-grid" class="grid grid-cols-2 xl:grid-cols-4 gap-3 h-full">
+                <!-- Dynamic 4 Days Columns Rendered via JS -->
+            </div>
+        </section>
+
+        <!-- RIGHT SECTION: YOUTUBE MEDIA PLAYER & LOCKER NOTICE (Approx 37% Width) -->
+        <section class="lg:w-[37%] flex flex-col gap-3 h-full">
+            
+            <!-- YouTube Player Container Card -->
+            <div class="bg-white rounded-2xl border-2 border-kejati-border p-3.5 shadow-sm flex flex-col justify-between flex-grow">
+                
+                <!-- Player Header -->
+                <div class="flex items-center justify-between pb-2 mb-2 border-b-2 border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
+                        <span class="text-xs font-black uppercase text-slate-800 tracking-wider flex items-center gap-1 font-outfit">
+                            <i class="fa-brands fa-youtube text-red-600 text-sm"></i> Media Informasi & Streaming
+                        </span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-black bg-red-100 text-red-600 uppercase tracking-wider">
+                        <i class="fa-solid fa-signal mr-1"></i> TV SIARAN
+                    </span>
+                </div>
+
+                <!-- Video Iframe Embed -->
+                <div class="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                    <iframe 
+                        id="youtube-iframe"
+                        class="w-full h-full object-cover"
+                        src="9689Bhx7N2A" 
+                        title="YouTube Media Player"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <!-- Video Info / Controls Preset -->
+                <div class="mt-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <div class="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs flex-shrink-0">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div class="truncate">
+                            <p class="text-[11px] font-black text-slate-800 truncate leading-tight">Saluran Resmi Kejaksaan Tinggi NTB</p>
+                            <p class="text-[9px] text-slate-500 font-bold truncate">YouTube Official Channel</p>
+                        </div>
+                    </div>
+                    <button onclick="openAdminModal()" class="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[10px] font-bold text-slate-700 rounded-lg transition flex-shrink-0">
+                        <i class="fa-solid fa-link text-red-600 mr-1"></i> Ubah Video
+                    </button>
+                </div>
+            </div>
+
+            <!-- LOCKER NOTICE BOX (PENGINGAT MENITIPKAN HP/BARANG ELEKTRONIK) -->
+            <div class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 rounded-2xl p-3.5 text-white shadow-md border-2 border-amber-300 flex items-center gap-3 relative overflow-hidden flex-shrink-0">
+                <!-- Background Decor Pattern -->
+                <div class="absolute -right-4 -bottom-4 text-white/10 text-7xl font-black">
+                    <i class="fa-solid fa-vault"></i>
+                </div>
+
+                <!-- Icon Box -->
+                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-white text-2xl border border-white/30 shadow-sm">
+                    <i class="fa-solid fa-mobile-screen-button animate-bounce"></i>
+                </div>
+
+                <!-- Text Content -->
+                <div class="z-10">
+                    <div class="flex items-center gap-1.5 mb-0.5">
+                        <span class="bg-white text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow-xs">
+                            HIMBAUAN KEPADA PENGUNJUNG
+                        </span>
+                    </div>
+                    <h3 class="text-xs lg:text-sm font-black font-outfit uppercase leading-tight tracking-wide text-amber-50">
+                        Harap Menitipkan Barang Elektronik & Handphone
+                    </h3>
+                    <p class="text-[10px] text-amber-100 font-semibold leading-tight mt-0.5">
+                        Demi kenyamanan dan keamanan area pelayanan terbatas, silakan gunakan loker penyimpanan di area PTSP / Penerima Tamu.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER RUNNING TEXT & ACTIONS -->
+    <footer class="w-full bright-glass-header border-t-2 border-kejati-border flex-shrink-0 z-30">
+        <div class="max-w-[1920px] mx-auto flex items-center justify-between">
+            
+            <!-- Announcement Label -->
+            <div class="bg-kejati-primary text-white font-black px-5 py-2.5 flex items-center gap-2 flex-shrink-0 z-10 shadow-md">
+                <i class="fa-solid fa-bullhorn text-sm animate-bounce"></i>
+                <span class="uppercase tracking-wider text-xs font-outfit">PENGUMUMAN:</span>
+            </div>
+
+            <!-- Marquee Running Text -->
+            <div class="overflow-hidden whitespace-nowrap w-full py-2 relative flex items-center bg-white/60">
+                <div id="running-text" class="inline-block animate-marquee text-xs lg:text-sm font-bold text-kejati-dark tracking-wide">
+                    Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-2 px-3 flex-shrink-0 z-10 border-l-2 border-kejati-border bg-white py-1">
+                <button onclick="toggleFullscreen()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Layar Penuh TV">
+                    <i class="fa-solid fa-expand text-base"></i>
+                </button>
+                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Pengaturan Admin">
+                    <i class="fa-solid fa-gear text-base"></i>
+                </button>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- ADMIN MODAL -->
+    <div id="admin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white border-2 border-kejati-primary rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden m-4">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 bg-kejati-primary text-white flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-sliders text-kejati-goldaccent text-xl"></i>
+                    <h2 class="text-xl font-bold font-outfit">Kelola Data Piket & Link Media YouTube</h2>
+                </div>
+                <button onclick="closeAdminModal()" class="text-white/80 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto flex-grow space-y-6 bg-slate-50">
+                
+                <!-- YouTube & General Info Settings -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <h3 class="text-xs font-bold text-kejati-primary uppercase tracking-wider"><i class="fa-brands fa-youtube mr-2 text-red-600"></i>Pengaturan YouTube & Header</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Instansi</label>
+                            <input type="text" id="input-office-name" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">YouTube Video / Live Stream ID or URL</label>
+                            <input type="text" id="input-youtube-id" placeholder="Contoh: dQw4w9WgXcQ atau URL YouTube" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Teks Running Text</label>
+                            <input type="text" id="input-running-text" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Days & Officer Form Blocks -->
+                <div id="admin-days-container" class="space-y-6">
+                    <!-- Dynamic Days Form Rendered via JS -->
+                </div>
+
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-slate-100 border-t border-slate-200 flex justify-end gap-3">
+                <button onclick="closeAdminModal()" class="px-5 py-2 bg-slate-300 hover:bg-slate-400 rounded-xl text-xs font-bold text-slate-700 transition">Batal</button>
+                <button onclick="saveAdminSettings()" class="px-6 py-2 bg-kejati-primary hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition shadow-md">
+                    <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Semua Perubahan
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Data Piket Default
+        const defaultSchedule = [
+            {
+                dayName: "SENIN",
+                dateLabel: "Hari Ke-1",
+                officers: [
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. AHUHTINDAN, S.H., M.H.", nip: "19780512 200212 1 003", position: "Koordinator / Jaksa Utama Pratama" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "BAMBANG TRIYONO, S.H.", nip: "19890315 201101 2 005", position: "Jaksa Fungsional PTSP" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "HARI KURNIAWAN, A.Md.", nip: "19920410 201402 1 002", position: "Petugas Keamanan (Kamdal)" },
+                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "ROSITA DEWI, S.E.", nip: "19950820 201903 2 009", position: "Staf Penerima Tamu / PTSP" }
+                ]
+            },
+            {
+                dayName: "SELASA",
+                dateLabel: "Hari Ke-2",
+                officers: [
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. AMN SENAN, S.H., M.H.", nip: "19750911 200003 1 001", position: "Kasi Penuntutan / Jaksa Madya" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "DESAK MADE PRATIWI, S.H.", nip: "19910214 201503 2 004", position: "Jaksa Fungsional Intelijen" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "AHMAD RIADI, A.Md.", nip: "19940705 201801 1 007", position: "Staf Administrasi & Informasi" },
+                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "I WAYAN GEDE", nip: "19931112 201602 1 003", position: "Petugas Keamanan (Kamdal)" }
+                ]
+            },
+            {
+                dayName: "RABU",
+                dateLabel: "Hari Ke-3",
+                officers: [
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. RHUHKINDAN, S.H., M.H.", nip: "19800120 200501 1 002", position: "Pemeriksa / Jaksa Utama Muda" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "NURUL HIDAYATI, S.H.", nip: "19900618 201212 2 006", position: "Jaksa Fungsional Pidsus" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "FAJAR KURNIAWAN, S.Kom.", nip: "19960430 202001 1 011", position: "Pranata Komputer / TI" },
+                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "ROBI SYAHPUTRA", nip: "19950101 201703 1 008", position: "Petugas Keamanan (Kamdal)" }
+                ]
+            },
+            {
+                dayName: "KAMIS",
+                dateLabel: "Hari Ke-4",
+                officers: [
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. AMRT SENAN, S.H., M.H.", nip: "19761204 200112 1 005", position: "Kasi Datun / Jaksa Madya" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "NI LUH DEWI, S.H.", nip: "19881009 201001 2 003", position: "Jaksa Fungsional Pidum" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "EKO PRASETYO, A.Md.", nip: "19970322 202102 1 010", position: "Staf PTSP Pelayanan" },
+                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "ZULKARNAIN", nip: "19910815 201401 1 004", position: "Petugas Keamanan (Kamdal)" }
+                ]
+            }
+        ];
+
+        let state = {
+            officeName: "KEJAKSAAN TINGGI NUSA TENGGARA BARAT",
+            youtubeVideoId: "PL3aA3yXz_y8Z_V0d1I1jV2A1", // Playlist / Video ID
+            runningText: "Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.",
+            schedule: []
+        };
+
+        // Initialize App State
+        function initApp() {
+            const savedState = localStorage.getItem('kejati_piket_split_v1');
+            if (savedState) {
+                try {
+                    state = JSON.parse(savedState);
+                } catch(e) {
+                    state.schedule = defaultSchedule;
+                }
+            } else {
+                state.schedule = defaultSchedule;
+            }
+
+            syncCurrentDayHighlight();
+            renderDashboard();
+            updateYouTubeEmbed();
+            startClock();
+        }
+
+        // Highlight Active Day (WITA Time Sync)
+        function syncCurrentDayHighlight() {
+            const daysMap = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
+            const todayName = daysMap[new Date().getDay()];
+
+            state.schedule.forEach(day => {
+                day.isToday = (day.dayName.toUpperCase() === todayName);
+            });
+        }
+
+        // Realtime WITA Clock
+        function startClock() {
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            function update() {
+                const now = new Date();
+                
+                document.getElementById('clock-day').innerText = days[now.getDay()];
+                document.getElementById('clock-date').innerText = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+
+                const h = String(now.getHours()).padStart(2, '0');
+                const m = String(now.getMinutes()).padStart(2, '0');
+                const s = String(now.getSeconds()).padStart(2, '0');
+                document.getElementById('clock-time').innerText = `${h}:${m}:${s}`;
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        // Helper to extract YouTube Video / Playlist ID
+        function extractYouTubeId(urlOrId) {
+            if (!urlOrId) return 'PL3aA3yXz_y8Z_V0d1I1jV2A1';
+            const clean = urlOrId.trim();
+            if (clean.includes('youtube.com') || clean.includes('youtu.be')) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = clean.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : clean;
+            }
+            return clean;
+        }
+
+        function updateYouTubeEmbed() {
+            const iframe = document.getElementById('youtube-iframe');
+            const ytId = extractYouTubeId(state.youtubeVideoId);
+            
+            // Handle playlist vs single video
+            if (ytId.startsWith('PL')) {
+                iframe.src = `https://www.youtube.com/embed/videoseries?list=${ytId}&autoplay=1&mute=1&loop=1&enablejsapi=1`;
+            } else {
+                iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&enablejsapi=1`;
+            }
+        }
+
+        // Render Dashboard Cards
+        function renderDashboard() {
+            document.getElementById('display-office-name').innerText = state.officeName;
+            document.getElementById('running-text').innerText = state.runningText;
+
+            const gridContainer = document.getElementById('days-grid');
+            gridContainer.innerHTML = '';
+
+            state.schedule.forEach((dayData) => {
+                const isToday = dayData.isToday;
+
+                let officersHtml = '';
+                dayData.officers.forEach((off, idx) => {
+                    const isPengawas = idx === 0 || off.type === 'pengawas';
+
+                    if (isPengawas) {
+                        officersHtml += `
+                            <!-- PENGAWAS PIKET -->
+                            <div class="supervisor-row rounded-xl p-2.5 relative overflow-hidden shadow-xs">
+                                <div class="flex items-center justify-between mb-0.5">
+                                    <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-kejati-gold text-white tracking-wider flex items-center gap-1 shadow-xs">
+                                        ${off.role || 'PENGAWAS'}
+                                    </span>
+                                    <span class="text-[9px] font-extrabold text-kejati-gold tracking-widest uppercase">SUPERVISOR</span>
+                                </div>
+                                
+                                <h3 class="text-xs lg:text-sm font-black text-kejati-dark truncate font-outfit uppercase leading-snug mt-0.5">
+                                    ${off.name}
+                                </h3>
+                                
+                                <div class="text-[10px] font-bold text-slate-600 font-mono">
+                                    <span>NIP: ${off.nip || '-'}</span>
+                                </div>
+                                <p class="text-[10px] text-kejati-gold font-bold truncate">
+                                    <i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${off.position}
+                                </p>
+                            </div>
+                        `;
+                    } else {
+                        officersHtml += `
+                            <!-- ANGGOTA PIKET CARD -->
+                            <div class="officer-row rounded-xl p-2 relative shadow-xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[9px] font-black text-kejati-primary uppercase tracking-wider">
+                                        ${off.role || ('ANGGOTA ' + idx)}
+                                    </span>
+                                </div>
+                                
+                                <h3 class="text-xs font-extrabold text-slate-800 truncate font-outfit uppercase leading-snug">
+                                    ${off.name}
+                                </h3>
+                                
+                                <div class="text-[10px] text-slate-500 font-mono font-semibold">
+                                    <span>NIP: ${off.nip || '-'}</span>
+                                </div>
+                                <p class="text-[10px] font-semibold text-emerald-700 truncate">${off.position}</p>
+                            </div>
+                        `;
+                    }
+                });
+
+                const dayCardHtml = `
+                    <div class="bright-day-card rounded-2xl p-3 flex flex-col justify-between h-full relative ${isToday ? 'active-day animate-pulse-glow' : ''}">
+                        
+                        <!-- Day Header -->
+                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b-2 border-kejati-border">
+                            <div>
+                                <h2 class="text-lg lg:text-xl font-black font-outfit text-kejati-dark tracking-wider uppercase leading-none">
+                                    ${dayData.dayName}
+                                </h2>
+                                <span class="text-[10px] text-kejati-primary font-bold tracking-widest uppercase">${dayData.dateLabel || 'Jadwal Reguler'}</span>
+                            </div>
+                            
+                            ${isToday ? `
+                                <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white flex items-center gap-1 shadow-xs animate-badge-bounce">
+                                    <i class="fa-solid fa-star text-[7px]"></i> HARI INI
+                                </span>
+                            ` : `
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">4 Petugas</span>
+                            `}
+                        </div>
+
+                        <!-- 4 Officers List -->
+                        <div class="space-y-1.5 flex-grow flex flex-col justify-between">
+                            ${officersHtml}
+                        </div>
+
+                        <!-- Footer Status Indicator -->
+                        <div class="mt-2 pt-1.5 border-t border-slate-200 flex justify-between items-center text-[10px] font-bold text-slate-500">
+                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>07.00 - 16.00 WITA</span>
+                            <span class="font-extrabold uppercase text-kejati-emerald flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Siaga
+                            </span>
+                        </div>
+
+                    </div>
+                `;
+                gridContainer.innerHTML += dayCardHtml;
+            });
+        }
+
+        // Admin Settings Modal Functions
+        function openAdminModal() {
+            document.getElementById('input-office-name').value = state.officeName;
+            document.getElementById('input-youtube-id').value = state.youtubeVideoId || '';
+            document.getElementById('input-running-text').value = state.runningText;
+            renderAdminForm();
+
+            const modal = document.getElementById('admin-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function renderAdminForm() {
+            const container = document.getElementById('admin-days-container');
+            container.innerHTML = '';
+
+            state.schedule.forEach((dayData, dayIdx) => {
+                let officersFormHtml = '';
+                dayData.officers.forEach((off, offIdx) => {
+                    const isPengawas = offIdx === 0;
+                    officersFormHtml += `
+                        <div class="p-3 ${isPengawas ? 'bg-amber-50 border border-amber-300' : 'bg-white border border-slate-200'} rounded-xl space-y-2 shadow-xs">
+                            <span class="text-[10px] font-black ${isPengawas ? 'text-amber-700' : 'text-kejati-primary'} uppercase">
+                                ${isPengawas ? 'PENGAWAS PIKET' : ('ANGGOTA PIKET ' + offIdx)}
+                            </span>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Nama Lengkap & Gelar</label>
+                                    <input type="text" value="${off.name}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 mb-0.5">NIP / NRP</label>
+                                    <input type="text" value="${off.nip}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Pangkat / Jabatan / Regu</label>
+                                    <input type="text" value="${off.position}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                const dayBlockHtml = `
+                    <div class="bg-white p-4 rounded-xl border border-kejati-border shadow-sm space-y-3">
+                        <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <input type="text" value="${dayData.dayName}" onchange="updateDayName(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-kejati-primary font-black text-sm rounded px-2.5 py-1 uppercase font-outfit">
+                            <input type="text" value="${dayData.dateLabel || ''}" placeholder="Label Hari" onchange="updateDayLabel(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-slate-600 text-xs font-bold rounded px-2 py-1">
+                        </div>
+                        <div class="space-y-2">
+                            ${officersFormHtml}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += dayBlockHtml;
+            });
+        }
+
+        function updateDayName(dayIdx, val) {
+            state.schedule[dayIdx].dayName = val.toUpperCase();
+        }
+
+        function updateDayLabel(dayIdx, val) {
+            state.schedule[dayIdx].dateLabel = val;
+        }
+
+        function updateOfficerData(dayIdx, offIdx, key, val) {
+            state.schedule[dayIdx].officers[offIdx][key] = val;
+        }
+
+        function saveAdminSettings() {
+            state.officeName = document.getElementById('input-office-name').value;
+            state.youtubeVideoId = document.getElementById('input-youtube-id').value;
+            state.runningText = document.getElementById('input-running-text').value;
+
+            syncCurrentDayHighlight();
+            localStorage.setItem('kejati_piket_split_v1', JSON.stringify(state));
+            renderDashboard();
+            updateYouTubeEmbed();
+            closeAdminModal();
+        }
+
+        // Fullscreen Toggle
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => console.error(err));
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
