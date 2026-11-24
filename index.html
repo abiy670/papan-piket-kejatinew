@@ -193,8 +193,8 @@
                 </div>
             </div>
 
-            <!-- Date & Live Clock (WITA) -->
-            <div class="flex items-center gap-5 bg-white px-5 py-2 rounded-2xl border-2 border-kejati-border shadow-sm">
+            <!-- Date & Live Clock (WITA) - Klik untuk atur waktu -->
+            <div onclick="openAdminModal()" title="Klik untuk mengatur jam & tanggal" class="flex items-center gap-5 bg-white hover:bg-emerald-50/60 cursor-pointer transition px-5 py-2 rounded-2xl border-2 border-kejati-border shadow-sm group">
                 <div class="text-right border-r-2 border-kejati-border pr-5">
                     <div id="clock-day" class="text-base font-black text-kejati-gold uppercase tracking-wider font-outfit leading-tight">Selasa</div>
                     <div id="clock-date" class="text-xs text-slate-600 font-bold">24 November 2026</div>
@@ -204,7 +204,10 @@
                     <div id="clock-time" class="text-2xl lg:text-3xl font-black font-outfit tracking-wider text-kejati-dark drop-shadow-sm">
                         00:00:00
                     </div>
-                    <span class="text-[9px] uppercase font-black text-kejati-emerald tracking-widest -mt-0.5">WITA (UTC+8)</span>
+                    <div class="flex items-center gap-1 -mt-0.5">
+                        <span id="clock-tz-label" class="text-[9px] uppercase font-black text-kejati-emerald tracking-widest">WITA (UTC+8)</span>
+                        <i class="fa-solid fa-pen text-[8px] text-slate-400 group-hover:text-kejati-primary"></i>
+                    </div>
                 </div>
             </div>
 
@@ -381,7 +384,7 @@
                 <button onclick="toggleFullscreen()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Layar Penuh TV">
                     <i class="fa-solid fa-expand text-base"></i>
                 </button>
-                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Pengaturan Admin">
+                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Pengaturan Waktu & Data Piket">
                     <i class="fa-solid fa-gear text-base"></i>
                 </button>
             </div>
@@ -397,7 +400,7 @@
             <div class="px-6 py-4 bg-kejati-primary text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-sliders text-kejati-goldaccent text-xl"></i>
-                    <h2 class="text-xl font-bold font-outfit">Kelola Data Piket & Link Media YouTube</h2>
+                    <h2 class="text-xl font-bold font-outfit">Pengaturan Waktu, Data Piket & Media YouTube</h2>
                 </div>
                 <button onclick="closeAdminModal()" class="text-white/80 hover:text-white text-xl">
                     <i class="fa-solid fa-xmark"></i>
@@ -407,6 +410,38 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto flex-grow space-y-6 bg-slate-50">
                 
+                <!-- Time & Duty Hours Settings -->
+                <div class="bg-white p-4 rounded-xl border-2 border-emerald-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xs font-black text-kejati-primary uppercase tracking-wider">
+                            <i class="fa-regular fa-clock mr-2 text-emerald-600"></i>Pengaturan Waktu Layar & Jam Piket
+                        </h3>
+                        <span class="text-[10px] font-bold text-slate-500">Berguna jika jam sistem Smart TV tidak sinkron</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Mode Jam Layar</label>
+                            <select id="input-clock-mode" onchange="toggleManualTimeInputs()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                                <option value="auto">Otomatis (Waktu Perangkat)</option>
+                                <option value="manual">Manual (Atur Tanggal & Jam)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Manual</label>
+                            <input type="date" id="input-manual-date" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Manual (Mulai)</label>
+                            <input type="time" step="1" id="input-manual-time" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Piket</label>
+                            <input type="text" id="input-duty-hours" placeholder="Contoh: 07.00 - 16.00 WITA" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- YouTube & General Info Settings -->
                 <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <h3 class="text-xs font-bold text-kejati-primary uppercase tracking-wider"><i class="fa-brands fa-youtube mr-2 text-red-600"></i>Pengaturan YouTube & Header</h3>
@@ -446,46 +481,46 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Data Piket Default
+        // Data Piket Kosong (Siap Diisi)
         const defaultSchedule = [
             {
                 dayName: "SENIN",
                 dateLabel: "Hari Ke-1",
                 officers: [
-                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. AHUHTINDAN, S.H., M.H.", nip: "19780512 200212 1 003", position: "Koordinator / Jaksa Utama Pratama" },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "BAMBANG TRIYONO, S.H.", nip: "19890315 201101 2 005", position: "Jaksa Fungsional PTSP" },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "HARI KURNIAWAN, A.Md.", nip: "19920410 201402 1 002", position: "Petugas Keamanan (Kamdal)" },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "ROSITA DEWI, S.E.", nip: "19950820 201903 2 009", position: "Staf Penerima Tamu / PTSP" }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             },
             {
                 dayName: "SELASA",
                 dateLabel: "Hari Ke-2",
                 officers: [
-                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. AMN SENAN, S.H., M.H.", nip: "19750911 200003 1 001", position: "Kasi Penuntutan / Jaksa Madya" },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "DESAK MADE PRATIWI, S.H.", nip: "19910214 201503 2 004", position: "Jaksa Fungsional Intelijen" },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "AHMAD RIADI, A.Md.", nip: "19940705 201801 1 007", position: "Staf Administrasi & Informasi" },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "I WAYAN GEDE", nip: "19931112 201602 1 003", position: "Petugas Keamanan (Kamdal)" }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             },
             {
                 dayName: "RABU",
                 dateLabel: "Hari Ke-3",
                 officers: [
-                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. RHUHKINDAN, S.H., M.H.", nip: "19800120 200501 1 002", position: "Pemeriksa / Jaksa Utama Muda" },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "NURUL HIDAYATI, S.H.", nip: "19900618 201212 2 006", position: "Jaksa Fungsional Pidsus" },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "FAJAR KURNIAWAN, S.Kom.", nip: "19960430 202001 1 011", position: "Pranata Komputer / TI" },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "ROBI SYAHPUTRA", nip: "19950101 201703 1 008", position: "Petugas Keamanan (Kamdal)" }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             },
             {
                 dayName: "KAMIS",
                 dateLabel: "Hari Ke-4",
                 officers: [
-                    { role: "PENGAWAS PIKET", type: "pengawas", name: "Dr. AMRT SENAN, S.H., M.H.", nip: "19761204 200112 1 005", position: "Kasi Datun / Jaksa Madya" },
-                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "NI LUH DEWI, S.H.", nip: "19881009 201001 2 003", position: "Jaksa Fungsional Pidum" },
-                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "EKO PRASETYO, A.Md.", nip: "19970322 202102 1 010", position: "Staf PTSP Pelayanan" },
-                    { role: "ANGGOTA PIKET 3", type: "anggota", name: "ZULKARNAIN", nip: "19910815 201401 1 004", position: "Petugas Keamanan (Kamdal)" }
+                    { role: "PENGAWAS PIKET", type: "pengawas", name: "", nip: "", position: "" },
+                    { role: "WIRA PIKET", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 1", type: "anggota", name: "", nip: "", position: "" },
+                    { role: "ANGGOTA PIKET 2", type: "anggota", name: "", nip: "", position: "" }
                 ]
             }
         ];
@@ -494,6 +529,11 @@
             officeName: "KEJAKSAAN TINGGI NUSA TENGGARA BARAT",
             youtubeVideoId: "9689Bhx7N2A",
             runningText: "Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.",
+            timeSettings: {
+                mode: "auto", // "auto" or "manual"
+                offsetMs: 0,
+                dutyHours: "07.00 - 16.00 WITA"
+            },
             layout: {
                 mediaWidthPercent: 37,
                 swapped: false,
@@ -502,20 +542,31 @@
             schedule: []
         };
 
+        // Get effective current Date (Auto or Manual offset)
+        function getEffectiveNow() {
+            if (state.timeSettings && state.timeSettings.mode === "manual") {
+                return new Date(Date.now() + (Number(state.timeSettings.offsetMs) || 0));
+            }
+            return new Date();
+        }
+
         // Save state helper
         function persistState() {
-            localStorage.setItem('kejati_piket_split_v2', JSON.stringify(state));
+            localStorage.setItem('kejati_piket_empty_v1', JSON.stringify(state));
         }
 
         // Initialize App State
         function initApp() {
-            const savedState = localStorage.getItem('kejati_piket_split_v2') || localStorage.getItem('kejati_piket_split_v1');
+            const savedState = localStorage.getItem('kejati_piket_empty_v1');
             if (savedState) {
                 try {
                     const parsed = JSON.parse(savedState);
                     state = { ...state, ...parsed };
                     if (!state.layout) {
                         state.layout = { mediaWidthPercent: 37, swapped: false, videoExpanded: false };
+                    }
+                    if (!state.timeSettings) {
+                        state.timeSettings = { mode: "auto", offsetMs: 0, dutyHours: "07.00 - 16.00 WITA" };
                     }
                 } catch(e) {
                     state.schedule = defaultSchedule;
@@ -541,7 +592,6 @@
             const lockerBox = document.getElementById('locker-notice-box');
             const expandBtn = document.getElementById('btn-expand-video');
 
-            // Apply Panel Order (Swapped or Default)
             if (state.layout.swapped) {
                 workspace.appendChild(mediaSec);
                 workspace.appendChild(resizer);
@@ -552,7 +602,6 @@
                 workspace.appendChild(mediaSec);
             }
 
-            // Apply Responsive Widths on Desktop
             const isDesktop = window.innerWidth >= 1024;
             if (isDesktop) {
                 const mediaPct = Math.min(72, Math.max(22, Number(state.layout.mediaWidthPercent) || 37));
@@ -564,7 +613,6 @@
                 scheduleSec.style.width = '100%';
             }
 
-            // Highlight active preset button
             document.querySelectorAll('.size-preset-btn').forEach(btn => {
                 const btnSize = Number(btn.getAttribute('data-size'));
                 if (Math.abs(btnSize - state.layout.mediaWidthPercent) <= 1) {
@@ -576,7 +624,6 @@
                 }
             });
 
-            // Apply Video Expanded state (hides locker box to maximize TV height)
             if (state.layout.videoExpanded) {
                 lockerBox.classList.add('hidden');
                 expandBtn.innerHTML = '<i class="fa-solid fa-down-left-and-up-right-to-center"></i>';
@@ -590,28 +637,24 @@
 
         window.addEventListener('resize', applyLayoutSettings);
 
-        // Set YouTube Section Width via Preset
         function setMediaWidth(percent) {
             state.layout.mediaWidthPercent = percent;
             applyLayoutSettings();
             persistState();
         }
 
-        // Toggle Video Height Expansion
         function toggleVideoExpand() {
             state.layout.videoExpanded = !state.layout.videoExpanded;
             applyLayoutSettings();
             persistState();
         }
 
-        // Swap Left & Right Panels
         function swapMainPanels() {
             state.layout.swapped = !state.layout.swapped;
             applyLayoutSettings();
             persistState();
         }
 
-        // Reset Layout to Default
         function resetLayout() {
             state.layout = {
                 mediaWidthPercent: 37,
@@ -669,7 +712,6 @@
                 isResizing = true;
                 resizer.classList.add('active');
                 document.body.style.cursor = 'col-resize';
-                // Prevent iframe from stealing mouse/pointer events while dragging
                 iframes.forEach(f => f.style.pointerEvents = 'none');
             };
 
@@ -683,7 +725,6 @@
                 let leftPercent = (offsetX / totalWidth) * 100;
                 let mediaPercent = state.layout.swapped ? leftPercent : (100 - leftPercent);
 
-                // Clamp between 22% and 72%
                 mediaPercent = Math.min(72, Math.max(22, Math.round(mediaPercent * 10) / 10));
                 state.layout.mediaWidthPercent = mediaPercent;
                 applyLayoutSettings();
@@ -755,10 +796,10 @@
             renderDashboard();
         }
 
-        // Highlight Active Day (WITA Time Sync)
+        // Highlight Active Day (Uses Effective Clock)
         function syncCurrentDayHighlight() {
             const daysMap = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-            const todayName = daysMap[new Date().getDay()];
+            const todayName = daysMap[getEffectiveNow().getDay()];
 
             state.schedule.forEach(day => {
                 day.isToday = (day.dayName.toUpperCase() === todayName);
@@ -766,20 +807,36 @@
         }
 
         // Realtime WITA Clock
+        let lastTrackedDay = null;
+
         function startClock() {
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
             function update() {
-                const now = new Date();
+                const now = getEffectiveNow();
+                const currentDayIndex = now.getDay();
                 
-                document.getElementById('clock-day').innerText = days[now.getDay()];
+                document.getElementById('clock-day').innerText = days[currentDayIndex];
                 document.getElementById('clock-date').innerText = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
 
                 const h = String(now.getHours()).padStart(2, '0');
                 const m = String(now.getMinutes()).padStart(2, '0');
                 const s = String(now.getSeconds()).padStart(2, '0');
                 document.getElementById('clock-time').innerText = `${h}:${m}:${s}`;
+
+                const tzLabel = document.getElementById('clock-tz-label');
+                if (state.timeSettings && state.timeSettings.mode === 'manual') {
+                    tzLabel.innerText = 'WITA (MANUAL)';
+                } else {
+                    tzLabel.innerText = 'WITA (UTC+8)';
+                }
+
+                if (lastTrackedDay !== null && lastTrackedDay !== currentDayIndex) {
+                    syncCurrentDayHighlight();
+                    renderDashboard();
+                }
+                lastTrackedDay = currentDayIndex;
             }
 
             update();
@@ -802,7 +859,6 @@
             const iframe = document.getElementById('youtube-iframe');
             const ytId = extractYouTubeId(state.youtubeVideoId);
             
-            // Handle playlist vs single video
             if (ytId.startsWith('PL')) {
                 iframe.src = `https://www.youtube.com/embed/videoseries?list=${ytId}&autoplay=1&mute=1&loop=1&enablejsapi=1`;
             } else {
@@ -810,10 +866,18 @@
             }
         }
 
+        // Helper for default role label by index
+        function getDefaultRoleLabel(idx) {
+            if (idx === 0) return 'PENGAWAS PIKET';
+            if (idx === 1) return 'WIRA PIKET';
+            return 'ANGGOTA PIKET ' + (idx - 1);
+        }
+
         // Render Dashboard Cards
         function renderDashboard() {
             document.getElementById('display-office-name').innerText = state.officeName;
             document.getElementById('running-text').innerText = state.runningText;
+            const dutyHoursText = (state.timeSettings && state.timeSettings.dutyHours) ? state.timeSettings.dutyHours : '07.00 - 16.00 WITA';
 
             const gridContainer = document.getElementById('days-grid');
             gridContainer.innerHTML = '';
@@ -824,6 +888,10 @@
                 let officersHtml = '';
                 dayData.officers.forEach((off, idx) => {
                     const isPengawas = idx === 0 || off.type === 'pengawas';
+                    const roleLabel = off.role || getDefaultRoleLabel(idx);
+                    const displayName = off.name && off.name.trim() !== '' ? off.name : '-';
+                    const displayNip = off.nip && off.nip.trim() !== '' ? off.nip : '-';
+                    const displayPosition = off.position && off.position.trim() !== '' ? off.position : '-';
 
                     if (isPengawas) {
                         officersHtml += `
@@ -831,41 +899,40 @@
                             <div class="supervisor-row rounded-xl p-2.5 relative overflow-hidden shadow-xs">
                                 <div class="flex items-center justify-between mb-0.5">
                                     <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-kejati-gold text-white tracking-wider flex items-center gap-1 shadow-xs">
-                                        ${off.role || 'PENGAWAS'}
+                                        ${roleLabel}
                                     </span>
-                                    <span class="text-[9px] font-extrabold text-kejati-gold tracking-widest uppercase">SUPERVISOR</span>
                                 </div>
                                 
                                 <h3 class="text-xs lg:text-sm font-black text-kejati-dark truncate font-outfit uppercase leading-snug mt-0.5">
-                                    ${off.name}
+                                    ${displayName}
                                 </h3>
                                 
                                 <div class="text-[10px] font-bold text-slate-600 font-mono">
-                                    <span>NIP: ${off.nip || '-'}</span>
+                                    <span>NIP: ${displayNip}</span>
                                 </div>
                                 <p class="text-[10px] text-kejati-gold font-bold truncate">
-                                    <i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${off.position}
+                                    <i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${displayPosition}
                                 </p>
                             </div>
                         `;
                     } else {
                         officersHtml += `
-                            <!-- ANGGOTA PIKET CARD -->
+                            <!-- WIRA / ANGGOTA PIKET CARD -->
                             <div class="officer-row rounded-xl p-2 relative shadow-xs">
                                 <div class="flex items-center justify-between">
                                     <span class="text-[9px] font-black text-kejati-primary uppercase tracking-wider">
-                                        ${off.role || ('ANGGOTA ' + idx)}
+                                        ${roleLabel}
                                     </span>
                                 </div>
                                 
                                 <h3 class="text-xs font-extrabold text-slate-800 truncate font-outfit uppercase leading-snug">
-                                    ${off.name}
+                                    ${displayName}
                                 </h3>
                                 
                                 <div class="text-[10px] text-slate-500 font-mono font-semibold">
-                                    <span>NIP: ${off.nip || '-'}</span>
+                                    <span>NIP: ${displayNip}</span>
                                 </div>
-                                <p class="text-[10px] font-semibold text-emerald-700 truncate">${off.position}</p>
+                                <p class="text-[10px] font-semibold text-emerald-700 truncate">${displayPosition}</p>
                             </div>
                         `;
                     }
@@ -908,7 +975,7 @@
 
                         <!-- Footer Status Indicator -->
                         <div class="mt-2 pt-1.5 border-t border-slate-200 flex justify-between items-center text-[10px] font-bold text-slate-500">
-                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>07.00 - 16.00 WITA</span>
+                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>${dutyHoursText}</span>
                             <span class="font-extrabold uppercase text-kejati-emerald flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Siaga
                             </span>
@@ -920,11 +987,38 @@
             });
         }
 
+        // Toggle Manual Time Inputs in Modal
+        function toggleManualTimeInputs() {
+            const mode = document.getElementById('input-clock-mode').value;
+            const dateInput = document.getElementById('input-manual-date');
+            const timeInput = document.getElementById('input-manual-time');
+            const isManual = mode === 'manual';
+            dateInput.disabled = !isManual;
+            timeInput.disabled = !isManual;
+        }
+
         // Admin Settings Modal Functions
         function openAdminModal() {
             document.getElementById('input-office-name').value = state.officeName;
             document.getElementById('input-youtube-id').value = state.youtubeVideoId || '';
             document.getElementById('input-running-text').value = state.runningText;
+
+            const ts = state.timeSettings || { mode: 'auto', offsetMs: 0, dutyHours: '07.00 - 16.00 WITA' };
+            document.getElementById('input-clock-mode').value = ts.mode || 'auto';
+            document.getElementById('input-duty-hours').value = ts.dutyHours || '07.00 - 16.00 WITA';
+
+            const currentDisplayNow = getEffectiveNow();
+            const yyyy = currentDisplayNow.getFullYear();
+            const mm = String(currentDisplayNow.getMonth() + 1).padStart(2, '0');
+            const dd = String(currentDisplayNow.getDate()).padStart(2, '0');
+            const hh = String(currentDisplayNow.getHours()).padStart(2, '0');
+            const min = String(currentDisplayNow.getMinutes()).padStart(2, '0');
+            const ss = String(currentDisplayNow.getSeconds()).padStart(2, '0');
+
+            document.getElementById('input-manual-date').value = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('input-manual-time').value = `${hh}:${min}:${ss}`;
+            toggleManualTimeInputs();
+
             renderAdminForm();
 
             const modal = document.getElementById('admin-modal');
@@ -946,23 +1040,24 @@
                 let officersFormHtml = '';
                 dayData.officers.forEach((off, offIdx) => {
                     const isPengawas = offIdx === 0;
+                    const formSectionTitle = off.role || getDefaultRoleLabel(offIdx);
                     officersFormHtml += `
                         <div class="p-3 ${isPengawas ? 'bg-amber-50 border border-amber-300' : 'bg-white border border-slate-200'} rounded-xl space-y-2 shadow-xs">
                             <span class="text-[10px] font-black ${isPengawas ? 'text-amber-700' : 'text-kejati-primary'} uppercase">
-                                ${isPengawas ? 'PENGAWAS PIKET' : ('ANGGOTA PIKET ' + offIdx)}
+                                ${formSectionTitle}
                             </span>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Nama Lengkap & Gelar</label>
-                                    <input type="text" value="${off.name}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi nama petugas..." value="${off.name || ''}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">NIP / NRP</label>
-                                    <input type="text" value="${off.nip}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi NIP / NRP..." value="${off.nip || ''}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Pangkat / Jabatan / Regu</label>
-                                    <input type="text" value="${off.position}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi jabatan / bagian..." value="${off.position || ''}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                             </div>
                         </div>
@@ -1000,6 +1095,28 @@
             state.officeName = document.getElementById('input-office-name').value;
             state.youtubeVideoId = document.getElementById('input-youtube-id').value;
             state.runningText = document.getElementById('input-running-text').value;
+
+            const clockMode = document.getElementById('input-clock-mode').value;
+            const dutyHours = document.getElementById('input-duty-hours').value.trim() || '07.00 - 16.00 WITA';
+            let offsetMs = 0;
+
+            if (clockMode === 'manual') {
+                const dateVal = document.getElementById('input-manual-date').value;
+                const timeVal = document.getElementById('input-manual-time').value;
+                if (dateVal && timeVal) {
+                    const normalizedTime = timeVal.length === 5 ? `${timeVal}:00` : timeVal;
+                    const targetDate = new Date(`${dateVal}T${normalizedTime}`);
+                    if (!isNaN(targetDate.getTime())) {
+                        offsetMs = targetDate.getTime() - Date.now();
+                    }
+                }
+            }
+
+            state.timeSettings = {
+                mode: clockMode,
+                offsetMs: offsetMs,
+                dutyHours: dutyHours
+            };
 
             syncCurrentDayHighlight();
             persistState();
