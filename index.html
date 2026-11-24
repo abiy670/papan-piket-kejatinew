@@ -412,11 +412,11 @@
                 
                 <!-- Time & Duty Hours Settings -->
                 <div class="bg-white p-4 rounded-xl border-2 border-emerald-200 shadow-sm space-y-3">
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
                         <h3 class="text-xs font-black text-kejati-primary uppercase tracking-wider">
                             <i class="fa-regular fa-clock mr-2 text-emerald-600"></i>Pengaturan Waktu Layar & Jam Piket
                         </h3>
-                        <span class="text-[10px] font-bold text-slate-500">Berguna jika jam sistem Smart TV tidak sinkron</span>
+                        <span class="text-[10px] font-bold text-slate-500">Pilih Mode Manual untuk mengetik tanggal & jam sendiri</span>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -424,20 +424,23 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Mode Jam Layar</label>
                             <select id="input-clock-mode" onchange="toggleManualTimeInputs()" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
                                 <option value="auto">Otomatis (Waktu Perangkat)</option>
-                                <option value="manual">Manual (Atur Tanggal & Jam)</option>
+                                <option value="manual">Manual (Ketik Tanggal & Jam)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Manual</label>
-                            <input type="date" id="input-manual-date" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Manual (Ketik)</label>
+                            <input type="text" id="input-manual-date" placeholder="DD-MM-YYYY (cth: 24-11-2026)" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50 disabled:bg-slate-200">
+                            <span class="text-[10px] text-slate-400">Format: HH-BB-TTTT (cth: 24-11-2026)</span>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Manual (Mulai)</label>
-                            <input type="time" step="1" id="input-manual-time" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Manual (Ketik)</label>
+                            <input type="text" id="input-manual-time" placeholder="JJ:MM:DD (cth: 07:30:00)" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50 disabled:bg-slate-200">
+                            <span class="text-[10px] text-slate-400">Format 24 jam: JJ:MM atau JJ:MM:DD</span>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Piket</label>
                             <input type="text" id="input-duty-hours" placeholder="Contoh: 07.00 - 16.00 WITA" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
+                            <span class="text-[10px] text-slate-400">Tampil di bagian bawah kartu hari</span>
                         </div>
                     </div>
                 </div>
@@ -548,6 +551,50 @@
                 return new Date(Date.now() + (Number(state.timeSettings.offsetMs) || 0));
             }
             return new Date();
+        }
+
+        // Parse typed manual date & time flexibly (supports DD-MM-YYYY, DD/MM/YYYY, YYYY-MM-DD and HH:MM[:SS] or HH.MM[.SS])
+        function parseManualDateTime(dateStr, timeStr) {
+            const cleanDate = (dateStr || '').trim();
+            const cleanTime = (timeStr || '').trim().replace(/\./g, ':');
+
+            let year, month, day;
+            const dmyMatch = cleanDate.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+            const ymdMatch = cleanDate.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/);
+
+            if (dmyMatch) {
+                day = parseInt(dmyMatch[1], 10);
+                month = parseInt(dmyMatch[2], 10);
+                year = parseInt(dmyMatch[3], 10);
+            } else if (ymdMatch) {
+                year = parseInt(ymdMatch[1], 10);
+                month = parseInt(ymdMatch[2], 10);
+                day = parseInt(ymdMatch[3], 10);
+            } else {
+                return null;
+            }
+
+            if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+            const timeMatch = cleanTime.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?$/);
+            if (!timeMatch) return null;
+
+            const hour = parseInt(timeMatch[1], 10);
+            const minute = parseInt(timeMatch[2], 10);
+            const second = timeMatch[3] !== undefined ? parseInt(timeMatch[3], 10) : 0;
+
+            if (hour > 23 || minute > 59 || second > 59) return null;
+
+            const parsedDate = new Date(year, month - 1, day, hour, minute, second);
+            if (
+                parsedDate.getFullYear() !== year ||
+                parsedDate.getMonth() !== month - 1 ||
+                parsedDate.getDate() !== day
+            ) {
+                return null;
+            }
+
+            return parsedDate;
         }
 
         // Save state helper
@@ -1015,7 +1062,8 @@
             const min = String(currentDisplayNow.getMinutes()).padStart(2, '0');
             const ss = String(currentDisplayNow.getSeconds()).padStart(2, '0');
 
-            document.getElementById('input-manual-date').value = `${yyyy}-${mm}-${dd}`;
+            // Pre-fill in readable DD-MM-YYYY and HH:MM:SS format so user can easily type over
+            document.getElementById('input-manual-date').value = `${dd}-${mm}-${yyyy}`;
             document.getElementById('input-manual-time').value = `${hh}:${min}:${ss}`;
             toggleManualTimeInputs();
 
@@ -1092,10 +1140,6 @@
         }
 
         function saveAdminSettings() {
-            state.officeName = document.getElementById('input-office-name').value;
-            state.youtubeVideoId = document.getElementById('input-youtube-id').value;
-            state.runningText = document.getElementById('input-running-text').value;
-
             const clockMode = document.getElementById('input-clock-mode').value;
             const dutyHours = document.getElementById('input-duty-hours').value.trim() || '07.00 - 16.00 WITA';
             let offsetMs = 0;
@@ -1103,14 +1147,18 @@
             if (clockMode === 'manual') {
                 const dateVal = document.getElementById('input-manual-date').value;
                 const timeVal = document.getElementById('input-manual-time').value;
-                if (dateVal && timeVal) {
-                    const normalizedTime = timeVal.length === 5 ? `${timeVal}:00` : timeVal;
-                    const targetDate = new Date(`${dateVal}T${normalizedTime}`);
-                    if (!isNaN(targetDate.getTime())) {
-                        offsetMs = targetDate.getTime() - Date.now();
-                    }
+                const targetDate = parseManualDateTime(dateVal, timeVal);
+
+                if (!targetDate) {
+                    alert('Format Tanggal atau Jam Manual tidak valid.\n\nContoh Tanggal: 24-11-2026\nContoh Jam: 07:30:00 atau 07:30');
+                    return;
                 }
+                offsetMs = targetDate.getTime() - Date.now();
             }
+
+            state.officeName = document.getElementById('input-office-name').value;
+            state.youtubeVideoId = document.getElementById('input-youtube-id').value;
+            state.runningText = document.getElementById('input-running-text').value;
 
             state.timeSettings = {
                 mode: clockMode,
