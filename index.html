@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Papan Piket Digital - Kejaksaan Tinggi NTB</title>
+    <title>Papan Informasi & Piket Digital - Kejaksaan Tinggi NTB</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -19,14 +19,14 @@
                         kejati: {
                             bg: '#f0fdf4',
                             card: '#ffffff',
-                            primary: '#047857',      /* Vibrant Emerald */
-                            emerald: '#059669',    /* Bright Emerald */
-                            light: '#dcfce7',      /* Very Light Emerald */
-                            border: '#a7f3d0',     /* Soft Mint Border */
-                            gold: '#b45309',       /* Rich Gold Text */
-                            goldbg: '#fef3c7',     /* Gold Accent Fill */
-                            goldaccent: '#f59e0b', /* Gold Highlight */
-                            dark: '#022c22'        /* Deep Forest Text */
+                            primary: '#047857',
+                            emerald: '#059669',
+                            light: '#dcfce7',
+                            border: '#a7f3d0',
+                            gold: '#b45309',
+                            goldbg: '#fef3c7',
+                            goldaccent: '#f59e0b',
+                            dark: '#022c22'
                         }
                     },
                     fontFamily: {
@@ -34,27 +34,24 @@
                         outfit: ['Outfit', 'sans-serif']
                     },
                     animation: {
-                        'pulse-glow': 'pulseGlow 2s infinite',
-                        'marquee': 'marquee 25s linear infinite',
-                        'float': 'float 4s ease-in-out infinite',
-                        'badge-bounce': 'badgeBounce 3s ease-in-out infinite'
+                        'marquee': 'marquee 28s linear infinite',
+                        'badge-bounce': 'badgeBounce 3s ease-in-out infinite',
+                        'eq-1': 'eqBar 0.9s ease-in-out infinite',
+                        'eq-2': 'eqBar 1.2s ease-in-out infinite 0.2s',
+                        'eq-3': 'eqBar 0.75s ease-in-out infinite 0.4s'
                     },
                     keyframes: {
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(245, 158, 11, 0.5)' },
-                            '50%': { boxShadow: '0 0 5px rgba(245, 158, 11, 0.1)' }
-                        },
                         marquee: {
-                            '0%': { transform: 'translateX(100%)' },
-                            '100%': { transform: 'translateX(-100%)' }
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-4px)' }
+                            '0%': { transform: 'translate3d(100%, 0, 0)' },
+                            '100%': { transform: 'translate3d(-100%, 0, 0)' }
                         },
                         badgeBounce: {
-                            '0%, 100%': { transform: 'scale(1)' },
-                            '50%': { transform: 'scale(1.05)' }
+                            '0%, 100%': { transform: 'translate3d(0, 0, 0) scale(1)' },
+                            '50%': { transform: 'translate3d(0, -2px, 0) scale(1.04)' }
+                        },
+                        eqBar: {
+                            '0%, 100%': { transform: 'scaleY(0.3)' },
+                            '50%': { transform: 'scaleY(1)' }
                         }
                     }
                 }
@@ -63,37 +60,301 @@
     </script>
 
     <style>
-        /* Bright & Modern Glassmorphism Display for TV */
+        /* Base Luxury Emerald-Gold Atmospheric Canvas (Statis & Super Ringan) */
         html, body {
             height: 100vh;
             overflow: hidden;
-            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 40%, #e0f2fe 100%);
+            background:
+                radial-gradient(circle at 18% 15%, rgba(16, 185, 129, 0.22) 0%, transparent 45%),
+                radial-gradient(circle at 85% 82%, rgba(245, 158, 11, 0.20) 0%, transparent 45%),
+                radial-gradient(circle at 50% 45%, rgba(254, 249, 195, 0.92) 0%, rgba(209, 250, 229, 0.90) 42%, rgba(224, 242, 254, 0.94) 80%, #d1fae5 100%);
         }
 
-        .bright-glass-header {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 2px solid rgba(16, 185, 129, 0.25);
-            box-shadow: 0 4px 20px rgba(4, 120, 87, 0.08);
+        /* ========== OPTIMIZED LIGHTWEIGHT 3D BACKGROUND (OPSIONAL) ========== */
+        .scene-3d-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+            contain: strict;
         }
-        
-        .bright-day-card {
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(12px);
-            border: 2px solid #a7f3d0;
-            box-shadow: 0 8px 20px -5px rgba(4, 120, 87, 0.08);
-            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+
+        #bg-particles-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .emblem-center-stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 460px;
+            height: 460px;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+        }
+
+        .gyro-ring {
+            position: absolute;
+            border-radius: 9999px;
+            will-change: transform;
+        }
+
+        .gyro-ring-1 {
+            width: 430px;
+            height: 430px;
+            border: 2.5px dashed rgba(4, 120, 87, 0.24);
+            animation: gyroSpinSimple 36s linear infinite;
+        }
+
+        .gyro-ring-2 {
+            width: 350px;
+            height: 350px;
+            border: 3px solid transparent;
+            border-top-color: rgba(245, 158, 11, 0.50);
+            border-bottom-color: rgba(245, 158, 11, 0.50);
+            animation: gyroSpinReverse 24s linear infinite;
+        }
+
+        @keyframes gyroSpinSimple {
+            0%   { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes gyroSpinReverse {
+            0%   { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .logo-medallion-3d {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            transform-style: preserve-3d;
+            animation: medallionSpinLight 22s linear infinite;
+            will-change: transform;
+        }
+
+        .medallion-layer {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .medallion-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .medallion-front {
+            transform: translateZ(2px);
+            backface-visibility: hidden;
+            opacity: 0.40;
+        }
+
+        .medallion-back {
+            transform: rotateY(180deg) translateZ(2px);
+            backface-visibility: hidden;
+            opacity: 0.40;
+        }
+
+        @keyframes medallionSpinLight {
+            0%   { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        body.eco-mode .scene-3d-bg {
+            display: none;
+        }
+
+        /* ========== CLEAN HEADER & LOGO (TANPA BACKDROP-FILTER BERAT) ========== */
+        .glass-3d-header {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(240, 253, 244, 0.94) 100%);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.28);
+            box-shadow: 0 8px 20px -10px rgba(4, 120, 87, 0.16);
+        }
+
+        .logo-3d-orbit-1 {
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            border: 2px solid rgba(5, 150, 105, 0.35);
+            border-top-color: #f59e0b;
+            border-bottom-color: transparent;
+            animation: gyroSpinSimple 10s linear infinite;
+            will-change: transform;
+        }
+
+        /* ========== SMOOTH GPU SLIDE TRANSITIONS (TANPA BLUR) ========== */
+        .slide-stage-3d {
+            position: relative;
+            flex-grow: 1;
+            overflow: hidden;
+            border-radius: 1.25rem;
+            contain: layout paint;
+        }
+
+        .transition-silk-sweep {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 30;
+            overflow: hidden;
+            border-radius: 1.25rem;
+        }
+
+        .transition-silk-sweep::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 45%;
+            height: 100%;
+            background: linear-gradient(
+                105deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.22) 40%,
+                rgba(251, 191, 36, 0.18) 55%,
+                transparent 100%
+            );
+            transform: translate3d(-130%, 0, 0) skewX(-18deg);
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        .transition-silk-sweep.sweeping::after {
+            animation: silkSweepPass 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes silkSweepPass {
+            0%   { transform: translate3d(-130%, 0, 0) skewX(-18deg); opacity: 0; }
+            25%  { opacity: 1; }
+            75%  { opacity: 0.85; }
+            100% { transform: translate3d(280%, 0, 0) skewX(-18deg); opacity: 0; }
+        }
+
+        .info-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate3d(0, 14px, 0) scale(0.985);
+            transition:
+                opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 4px;
+            will-change: transform, opacity;
+        }
+
+        .info-slide.slide-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate3d(0, 0, 0) scale(1);
+            z-index: 5;
+        }
+
+        .info-slide.slide-exit {
+            opacity: 0;
+            transform: translate3d(0, -10px, 0) scale(0.98);
+            z-index: 1;
+        }
+
+        .info-slide .stagger-card {
+            opacity: 0;
+            transform: translate3d(0, 12px, 0);
+            transition:
+                opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .info-slide.slide-active .stagger-card {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .info-slide.slide-active .stagger-1 { transition-delay: 0.05s; }
+        .info-slide.slide-active .stagger-2 { transition-delay: 0.10s; }
+        .info-slide.slide-active .stagger-3 { transition-delay: 0.15s; }
+        .info-slide.slide-active .stagger-4 { transition-delay: 0.20s; }
+        .info-slide.slide-active .stagger-5 { transition-delay: 0.25s; }
+        .info-slide.slide-active .stagger-6 { transition-delay: 0.30s; }
+        .info-slide.slide-active .stagger-7 { transition-delay: 0.35s; }
+
+        .title-fade-in {
+            animation: titleGlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes titleGlideIn {
+            0%   { opacity: 0; transform: translate3d(0, 5px, 0); }
+            100% { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+
+        .slide-progress-track {
+            height: 3.5px;
+            width: 100%;
+            background: rgba(167, 243, 208, 0.45);
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 7px;
+        }
+
+        .slide-progress-fill {
+            height: 100%;
+            width: 100%;
+            transform-origin: left center;
+            transform: scaleX(0);
+            background: linear-gradient(90deg, #047857 0%, #10b981 50%, #f59e0b 100%);
+            border-radius: 9999px;
+            will-change: transform;
+        }
+
+        /* ========== CRYSTAL LUXURY CARDS (GPU FRIENDLY) ========== */
+        .bright-day-card, .glass-info-card {
+            background: linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.92) 100%);
+            border: 1.5px solid rgba(167, 243, 208, 0.92);
+            border-bottom: 5px solid #34d399;
+            box-shadow: 0 10px 22px -10px rgba(4, 120, 87, 0.16), 0 3px 8px -2px rgba(15, 23, 42, 0.05);
+            transition: transform 0.25s ease, border-color 0.2s ease;
+        }
+
+        .bright-day-card:hover, .glass-info-card:hover {
+            transform: translate3d(0, -2px, 0);
+        }
+
+        .glass-info-card-gold {
+            background: linear-gradient(165deg, rgba(255, 253, 244, 0.96) 0%, rgba(254, 243, 199, 0.93) 100%);
+            border: 1.5px solid #fbbf24;
+            border-bottom: 5px solid #d97706;
+            box-shadow: 0 10px 22px -10px rgba(217, 119, 6, 0.20);
+            transition: transform 0.25s ease;
+        }
+
+        .glass-info-card-gold:hover {
+            transform: translate3d(0, -2px, 0);
         }
 
         .bright-day-card.active-day {
-            border: 2.5px solid #f59e0b;
-            background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%);
+            border: 2px solid #f59e0b;
+            border-bottom: 6px solid #d97706;
+            background: linear-gradient(170deg, #ffffff 0%, #fffbeb 65%, #fef3c7 100%);
+            box-shadow: 0 12px 26px -8px rgba(245, 158, 11, 0.34), 0 0 0 3px rgba(245, 158, 11, 0.14);
+            overflow: hidden;
         }
 
         .bright-day-card.dragging-card {
             opacity: 0.45;
-            transform: scale(0.98);
+            transform: scale(0.96);
         }
 
         .bright-day-card.drag-over-card {
@@ -104,36 +365,96 @@
         .panel-drag-over {
             outline: 3px dashed #047857;
             outline-offset: -3px;
-            border-radius: 1rem;
-            background-color: rgba(16, 185, 129, 0.06);
+            border-radius: 1.25rem;
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .supervisor-row {
+            background: linear-gradient(135deg, #fffdf0 0%, #fef3c7 100%);
+            border: 1.5px solid #f59e0b;
+            border-bottom: 3.5px solid #d97706;
+            box-shadow: 0 4px 10px -4px rgba(245, 158, 11, 0.22);
+        }
+
+        .officer-row {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid rgba(203, 213, 225, 0.95);
+            border-bottom: 3px solid #cbd5e1;
+            box-shadow: 0 3px 8px -4px rgba(15, 23, 42, 0.07);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .officer-row:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+            border-color: #34d399;
+            border-bottom-color: #10b981;
+            transform: translate3d(0, -1px, 0);
+        }
+
+        .flow-step-badge {
+            background: linear-gradient(135deg, #047857 0%, #059669 60%, #10b981 100%);
+            box-shadow: 0 4px 10px -3px rgba(4, 120, 87, 0.40);
+        }
+
+        .flow-step-badge-gold {
+            background: linear-gradient(135deg, #b45309 0%, #d97706 60%, #f59e0b 100%);
+            box-shadow: 0 4px 10px -3px rgba(180, 83, 9, 0.40);
+        }
+
+        /* ISOLATED TV CARD: Solid & terisolasi agar decoder YouTube tidak bentrok */
+        .tv-card-3d {
+            background: #ffffff;
+            border: 1.5px solid rgba(167, 243, 208, 0.95);
+            border-bottom: 5px solid #34d399;
+            box-shadow: 0 12px 24px -10px rgba(4, 120, 87, 0.18);
+            contain: layout style;
+            isolation: isolate;
+        }
+
+        .youtube-gpu-stage {
+            contain: strict;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            isolation: isolate;
+        }
+
+        .eq-bar-item {
+            height: 14px;
+            transform-origin: bottom center;
+            will-change: transform;
+        }
+
+        .locker-3d-banner {
+            background: linear-gradient(125deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
+            border: 1.5px solid #fde68a;
+            border-bottom: 5px solid #92400e;
+            box-shadow: 0 10px 22px -8px rgba(180, 83, 9, 0.35);
+        }
+
+        .clock-card-3d {
+            background: linear-gradient(145deg, #ffffff 0%, #f0fdf4 100%);
+            border: 1.5px solid #a7f3d0;
+            border-bottom: 4px solid #10b981;
+            box-shadow: 0 8px 16px -8px rgba(4, 120, 87, 0.22);
+            transition: transform 0.2s ease;
+        }
+
+        .clock-card-3d:hover {
+            transform: translate3d(0, -1px, 0);
         }
 
         .gold-gradient-text {
-            background: linear-gradient(135deg, #065f46 0%, #047857 40%, #b45309 100%);
+            background: linear-gradient(120deg, #065f46 0%, #047857 45%, #b45309 85%, #047857 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .supervisor-row {
-            background: linear-gradient(135deg, #fffbe3 0%, #fef3c7 100%);
-            border: 1.5px solid #f59e0b;
-            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.12);
+        .marquee-track {
+            will-change: transform;
         }
 
-        .officer-row {
-            background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            transition: all 0.2s ease;
-        }
-
-        .officer-row:hover {
-            background: #f0fdf4;
-            border-color: #34d399;
-        }
-
-        /* Resizer Handle */
         .resizer-handle {
-            width: 12px;
+            width: 14px;
             cursor: col-resize;
             display: flex;
             align-items: center;
@@ -141,67 +462,85 @@
             flex-shrink: 0;
             user-select: none;
             touch-action: none;
+            z-index: 20;
         }
 
         .resizer-bar {
-            width: 4px;
-            height: 64px;
-            background-color: #a7f3d0;
+            width: 5px;
+            height: 70px;
+            background: linear-gradient(180deg, #34d399, #047857, #f59e0b);
             border-radius: 9999px;
-            transition: all 0.2s ease;
+            opacity: 0.65;
+            transition: opacity 0.2s ease, height 0.2s ease;
         }
 
         .resizer-handle:hover .resizer-bar,
         .resizer-handle.active .resizer-bar {
-            background-color: #047857;
-            height: 110px;
-            width: 6px;
+            opacity: 1;
+            height: 120px;
+            width: 7px;
         }
 
-        /* Custom Scrollbar for Admin Modal */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f5f9; }
         ::-webkit-scrollbar-thumb { background: #059669; border-radius: 4px; }
     </style>
 </head>
-<body class="text-slate-800 h-screen flex flex-col justify-between font-sans select-none">
+<body class="text-slate-800 h-screen flex flex-col justify-between font-sans select-none relative eco-mode">
+
+    <!-- ========== LIGHTWEIGHT 3D BACKGROUND (AKTIF JIKA TOMBOL 3D DITEKAN) ========== -->
+    <div class="scene-3d-bg" aria-hidden="true">
+        <canvas id="bg-particles-canvas"></canvas>
+
+        <div class="emblem-center-stage">
+            <div class="gyro-ring gyro-ring-1"></div>
+            <div class="gyro-ring gyro-ring-2"></div>
+            <div class="logo-medallion-3d">
+                <div class="medallion-layer medallion-front">
+                    <img class="kejaksaan-logo-img" alt="Logo Kejaksaan RI" />
+                </div>
+                <div class="medallion-layer medallion-back">
+                    <img class="kejaksaan-logo-img" alt="Logo Kejaksaan RI" />
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- TOP HEADER -->
-    <header class="w-full px-6 py-3 bright-glass-header z-30 flex-shrink-0">
+    <header class="w-full px-6 py-2.5 glass-3d-header z-30 flex-shrink-0 relative">
         <div class="max-w-[1920px] mx-auto flex items-center justify-between">
             
             <!-- Logo & Title Header -->
             <div class="flex items-center gap-4">
-                <!-- Official Logo Kejaksaan RI -->
-                <div class="relative w-14 h-14 flex-shrink-0 animate-float">
+                <div class="relative w-14 h-14 flex-shrink-0 flex items-center justify-center">
+                    <div class="logo-3d-orbit-1"></div>
                     <img 
-                        src="https://www.kejaksaan.go.id/assets/img/webphada.png" 
+                        id="header-logo-img"
+                        class="kejaksaan-logo-img w-12 h-12 object-contain relative z-10"
                         alt="Logo Kejaksaan RI" 
-                        class="w-full h-full object-contain filter drop-shadow-[0_4px_8px_rgba(4,120,87,0.25)]"
-                        onerror="this.src='https://placehold.co/100x100/047857/ffffff?text=KEJAKSAAN'"
                     />
                 </div>
 
                 <div>
                     <div class="flex items-center gap-2 mb-0.5">
-                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-kejati-primary text-white tracking-wider shadow-sm">KEJAKSAAN RI</span>
-                        <span class="text-xs text-kejati-primary font-extrabold uppercase tracking-widest">Jadwal Penugasan Piket & Informasi Publik</span>
+                        <span id="display-badge-header" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-gradient-to-r from-kejati-primary to-emerald-600 text-white tracking-wider shadow-sm border-b-2 border-emerald-900">KEJAKSAAN RI</span>
+                        <span id="display-subtitle-header" class="text-xs text-kejati-primary font-extrabold uppercase tracking-widest">Papan Informasi Digital & Jadwal Piket</span>
                     </div>
-                    <h1 id="display-office-name" class="text-xl lg:text-2xl font-black tracking-wide font-outfit gold-gradient-text uppercase leading-none drop-shadow-sm">
+                    <h1 id="display-office-name" class="text-xl lg:text-2xl font-black tracking-wide font-outfit gold-gradient-text uppercase leading-none">
                         KEJAKSAAN TINGGI NUSA TENGGARA BARAT
                     </h1>
                 </div>
             </div>
 
-            <!-- Date & Live Clock (WITA) - Klik untuk atur waktu -->
-            <div onclick="openAdminModal()" title="Klik untuk mengatur jam & tanggal" class="flex items-center gap-5 bg-white hover:bg-emerald-50/60 cursor-pointer transition px-5 py-2 rounded-2xl border-2 border-kejati-border shadow-sm group">
+            <!-- Date & Live Clock (WITA) -->
+            <div onclick="openAdminModal()" title="Klik untuk mengatur jam & nama petugas piket" class="clock-card-3d flex items-center gap-5 cursor-pointer px-5 py-2 rounded-2xl group">
                 <div class="text-right border-r-2 border-kejati-border pr-5">
-                    <div id="clock-day" class="text-base font-black text-kejati-gold uppercase tracking-wider font-outfit leading-tight">Selasa</div>
-                    <div id="clock-date" class="text-xs text-slate-600 font-bold">24 November 2026</div>
+                    <div id="clock-day" class="text-base font-black text-kejati-gold uppercase tracking-wider font-outfit leading-tight">Kamis</div>
+                    <div id="clock-date" class="text-xs text-slate-600 font-bold">26 November 2026</div>
                 </div>
 
                 <div class="flex flex-col items-center justify-center">
-                    <div id="clock-time" class="text-2xl lg:text-3xl font-black font-outfit tracking-wider text-kejati-dark drop-shadow-sm">
+                    <div id="clock-time" class="text-2xl lg:text-3xl font-black font-outfit tracking-wider text-kejati-dark">
                         00:00:00
                     </div>
                     <div class="flex items-center gap-1 -mt-0.5">
@@ -214,11 +553,13 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA (RESIZABLE & SWAPPABLE SPLIT SCREEN LAYOUT) -->
-    <main id="main-workspace" class="flex-grow p-4 max-w-[1920px] w-full mx-auto flex flex-col lg:flex-row overflow-hidden h-full relative">
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-workspace" class="flex-grow p-3.5 max-w-[1920px] w-full mx-auto flex flex-col lg:flex-row overflow-hidden h-full relative z-10">
         
-        <!-- SECTION A: 4-DAY DUTY SCHEDULE GRID -->
+        <!-- SECTION A: AUTO-ROTATING MULTI-SLIDE INFORMATION BOARD -->
         <section id="schedule-section" style="width: 63%;" class="flex flex-col h-full min-w-[280px] transition-[border] duration-150">
+            
+            <!-- Top Slide Controller & Draggable Swap Bar -->
             <div 
                 draggable="true" 
                 ondragstart="onPanelDragStart(event, 'schedule')" 
@@ -227,23 +568,185 @@
                 ondragleave="onPanelDragLeave(event)"
                 ondrop="onPanelDrop(event, 'schedule')"
                 title="Tarik dan lepaskan ke sisi sebelah untuk menukar posisi panel"
-                class="flex items-center justify-between mb-2 cursor-grab active:cursor-grabbing bg-white/60 hover:bg-white px-3 py-1.5 rounded-xl border border-kejati-border/80 transition"
+                class="mb-2.5 cursor-grab active:cursor-grabbing bg-white/95 hover:bg-white px-3.5 py-2 rounded-2xl border border-kejati-border border-b-[3px] border-b-emerald-300 shadow-sm transition flex-shrink-0"
             >
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-grip-vertical text-slate-400 text-sm"></i>
-                    <i class="fa-solid fa-clipboard-user text-kejati-primary text-lg"></i>
-                    <h2 class="text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider">Papan Penugasan Piket 4 Hari</h2>
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-grip-vertical text-slate-400 text-sm"></i>
+                        <div id="active-slide-icon" class="w-8 h-8 rounded-xl bg-gradient-to-br from-kejati-primary to-emerald-500 text-white flex items-center justify-center shadow-md">
+                            <i class="fa-solid fa-clipboard-user text-xs"></i>
+                        </div>
+                        <div id="slide-header-text-wrap">
+                            <h2 id="active-slide-title" class="text-xs lg:text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider leading-none">
+                                Papan Penugasan Piket 4 Hari
+                            </h2>
+                            <span id="active-slide-subtitle" class="text-[9px] font-bold text-kejati-primary uppercase tracking-widest">
+                                Slide 1/3
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-1.5" onmousedown="event.stopPropagation()">
+                        <div id="slide-pills" class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200"></div>
+                        <div class="flex items-center gap-1 bg-emerald-50 p-1 rounded-xl border border-kejati-border">
+                            <button onclick="prevSlide()" class="w-6 h-6 rounded-lg hover:bg-white text-kejati-primary flex items-center justify-center text-[10px] transition" title="Slide Sebelumnya">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <button onclick="toggleSlideAutoPlay()" id="btn-slide-playpause" class="w-6 h-6 rounded-lg bg-kejati-primary text-white flex items-center justify-center text-[10px] shadow-xs transition" title="Jeda / Jalankan Slide Otomatis">
+                                <i class="fa-solid fa-pause"></i>
+                            </button>
+                            <button onclick="nextSlide()" class="w-6 h-6 rounded-lg hover:bg-white text-kejati-primary flex items-center justify-center text-[10px] transition" title="Slide Berikutnya">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex items-center gap-2">
-                    <span class="hidden sm:inline-flex items-center text-[11px] font-bold text-slate-500 bg-white px-2.5 py-0.5 rounded-lg border border-kejati-border">
-                        <i class="fa-solid fa-arrows-up-down-left-right text-emerald-600 mr-1.5"></i> Geser Kartu / Panel
-                    </span>
+
+                <div class="slide-progress-track">
+                    <div id="slide-progress-bar" class="slide-progress-fill"></div>
                 </div>
             </div>
 
-            <!-- Grid 4 Hari -->
-            <div id="days-grid" class="grid grid-cols-2 xl:grid-cols-4 gap-3 h-full overflow-hidden">
-                <!-- Dynamic 4 Days Columns Rendered via JS -->
+            <!-- MULTI-SLIDE STAGE -->
+            <div class="slide-stage-3d">
+                <div id="transition-silk" class="transition-silk-sweep"></div>
+
+                <!-- SLIDE 0: PAPAN PENUGASAN PIKET 4 HARI -->
+                <div id="slide-panel-0" class="info-slide slide-active">
+                    <div id="days-grid" class="grid grid-cols-2 xl:grid-cols-4 gap-3 h-full overflow-hidden"></div>
+                </div>
+
+                <!-- SLIDE 1: LAYANAN PUBLIK TERPADU (PTSP) & JAM PELAYANAN -->
+                <div id="slide-panel-1" class="info-slide">
+                    <div class="flex flex-col gap-3 h-full">
+                        
+                        <div class="stagger-card stagger-1 relative overflow-hidden rounded-2xl px-4 py-3 bg-gradient-to-r from-emerald-950 via-kejati-primary to-emerald-700 text-white border-2 border-emerald-400 border-b-[4px] border-b-emerald-950 shadow-lg flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+                            <div class="flex items-center gap-3 z-10">
+                                <div class="w-11 h-11 rounded-xl bg-amber-400/20 border border-amber-300/60 flex items-center justify-center text-amber-300 text-xl flex-shrink-0 shadow-md">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <div>
+                                    <span id="display-ptsp-badge" class="px-2 py-0.5 rounded bg-amber-400 text-amber-950 text-[9px] font-black uppercase tracking-wider">PTSP KEJATI NTB</span>
+                                    <h3 id="display-ptsp-title" class="text-sm lg:text-base font-black font-outfit uppercase tracking-wide text-white mt-0.5 leading-tight">
+                                        Pelayanan Terpadu Satu Pintu — Cepat, Akuntabel & Tanpa Biaya
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2 z-10 text-[10px]">
+                                <div class="bg-white/15 border border-white/25 rounded-xl px-3 py-1.5">
+                                    <span class="block font-black text-amber-300 uppercase">Senin – Kamis</span>
+                                    <span id="display-ptsp-mon-thu" class="font-bold text-white">08.00 – 16.00 WITA</span>
+                                </div>
+                                <div class="bg-white/15 border border-white/25 rounded-xl px-3 py-1.5">
+                                    <span class="block font-black text-amber-300 uppercase">Jumat</span>
+                                    <span id="display-ptsp-fri" class="font-bold text-white">08.00 – 16.30 WITA</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic 6 Service Cards from Google Sheets (Tab LAYANAN_PTSP) -->
+                        <div id="services-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-3 flex-grow"></div>
+
+                        <div class="stagger-card stagger-7 rounded-2xl px-4 py-2.5 bg-gradient-to-r from-kejati-dark via-kejati-primary to-emerald-700 text-white border-2 border-emerald-400 shadow-md flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-8 h-8 rounded-lg bg-amber-400 text-amber-950 flex items-center justify-center text-sm shadow-sm">
+                                    <i class="fa-solid fa-headset"></i>
+                                </span>
+                                <div>
+                                    <span id="display-hotline-label" class="text-[9px] font-black uppercase text-amber-300 tracking-wider block">Hotline & Informasi PTSP</span>
+                                    <span id="display-contact-hotline" class="text-xs font-black tracking-wide">Call Center Kejaksaan 1500-222 • PTSP Kejati NTB</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 text-xs font-bold">
+                                <span><i class="fa-solid fa-globe text-amber-300 mr-1.5"></i><span id="display-contact-web">kejati-ntb.kejaksaan.go.id</span></span>
+                                <span><i class="fa-solid fa-location-dot text-amber-300 mr-1.5"></i><span id="display-contact-address">Jl. Langko No. 75, Mataram, NTB</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: ZONA INTEGRITAS WBK/WBBM & ALUR KUNJUNGAN TAMU -->
+                <div id="slide-panel-2" class="info-slide">
+                    <div class="flex flex-col gap-3 h-full">
+
+                        <div class="stagger-card stagger-1 relative overflow-hidden rounded-2xl p-4 bg-gradient-to-r from-emerald-950 via-kejati-primary to-amber-700 text-white border-2 border-amber-300 border-b-[5px] border-b-emerald-950 shadow-xl flex items-center justify-between gap-4 flex-shrink-0">
+                            <div class="z-10">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span id="display-wbk-badge" class="px-2.5 py-0.5 rounded-full bg-amber-400 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow-sm">
+                                        ZONA INTEGRITAS • MENUJU WBK / WBBM
+                                    </span>
+                                    <span id="display-wbk-subbadge" class="text-[10px] font-extrabold text-amber-200 uppercase tracking-widest">
+                                        Kejaksaan Tinggi NTB
+                                    </span>
+                                </div>
+                                <h3 id="display-wbk-title" class="text-lg lg:text-xl font-black font-outfit uppercase tracking-wide leading-tight text-white">
+                                    Tolak Gratifikasi, Pungli & Suap — Melayani Sepenuh Hati
+                                </h3>
+                                <p id="display-maklumat-text" class="text-xs text-emerald-50 font-semibold mt-1 max-w-2xl">
+                                    Dengan ini kami menyatakan sanggup menyelenggarakan pelayanan publik sesuai standar yang ditetapkan secara transparan, akuntabel, dan bebas dari korupsi.
+                                </p>
+                            </div>
+                            <div class="hidden sm:flex w-16 h-16 rounded-2xl bg-white/15 border border-amber-300/60 items-center justify-center flex-shrink-0 shadow-lg">
+                                <i class="fa-solid fa-scale-balanced text-3xl text-amber-300"></i>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic 4-Step Visual Guest Visit Flow from Google Sheets (Tab ALUR_TAMU) -->
+                        <div class="stagger-card stagger-2 glass-info-card rounded-2xl p-4 flex flex-col justify-center flex-grow relative overflow-hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center text-xs shadow-sm">
+                                        <i class="fa-solid fa-route"></i>
+                                    </span>
+                                    <h4 id="display-alur-title" class="text-sm font-black font-outfit uppercase text-kejati-dark tracking-wider">
+                                        Alur Kunjungan & Standar Pelayanan Tamu
+                                    </h4>
+                                </div>
+                                <span id="display-alur-badge" class="text-[10px] font-black uppercase text-kejati-primary bg-emerald-100 px-2.5 py-0.5 rounded-full">
+                                    4 Langkah Mudah
+                                </span>
+                            </div>
+
+                            <div id="alur-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 relative"></div>
+                        </div>
+
+                        <!-- Dynamic 3 Service Quality Guarantees from Google Sheets -->
+                        <div class="stagger-card stagger-7 grid grid-cols-1 md:grid-cols-3 gap-3 flex-shrink-0">
+                            <div class="glass-info-card-gold rounded-2xl p-3 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center text-base shadow-md flex-shrink-0">
+                                    <i class="fa-solid fa-ban"></i>
+                                </div>
+                                <div>
+                                    <span id="display-j1-label" class="text-[10px] font-black uppercase text-amber-800 block">Zero Pungli</span>
+                                    <p id="display-j1-text" class="text-xs font-extrabold text-slate-800 leading-tight">Seluruh Layanan PTSP 100% Gratis</p>
+                                </div>
+                            </div>
+
+                            <div class="glass-info-card rounded-2xl p-3 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-kejati-primary to-emerald-600 text-white flex items-center justify-center text-base shadow-md flex-shrink-0">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                </div>
+                                <div>
+                                    <span id="display-j2-label" class="text-[10px] font-black uppercase text-kejati-primary block">Aman & Tertib</span>
+                                    <p id="display-j2-text" class="text-xs font-extrabold text-slate-800 leading-tight">Berpakaian Rapi, Sopan & Patuhi Protokol</p>
+                                </div>
+                            </div>
+
+                            <div class="glass-info-card rounded-2xl p-3 flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-600 to-blue-700 text-white flex items-center justify-center text-base shadow-md flex-shrink-0">
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                </div>
+                                <div>
+                                    <span id="display-j3-label" class="text-[10px] font-black uppercase text-sky-700 block">Survei Kepuasan</span>
+                                    <p id="display-j3-text" class="text-xs font-extrabold text-slate-800 leading-tight">Beri Penilaian Layanan di Loket PTSP</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -252,13 +755,11 @@
             <div class="resizer-bar"></div>
         </div>
 
-        <!-- SECTION B: YOUTUBE MEDIA PLAYER & LOCKER NOTICE -->
-        <section id="media-section" style="width: 37%;" class="flex flex-col gap-3 h-full min-w-[280px] transition-[border] duration-150">
+        <!-- SECTION B: PERSISTENT YOUTUBE MEDIA PLAYER & LOCKER NOTICE -->
+        <section id="media-section" style="width: 37%;" class="flex flex-col gap-3 h-full min-w-[280px] transition-[border] duration-150 pb-1">
             
             <!-- YouTube Player Container Card -->
-            <div id="youtube-card" class="bg-white rounded-2xl border-2 border-kejati-border p-3.5 shadow-sm flex flex-col justify-between flex-grow overflow-hidden">
-                
-                <!-- Player Header (Draggable to swap side) -->
+            <div id="youtube-card" class="tv-card-3d rounded-2xl p-3.5 flex flex-col justify-between flex-grow overflow-hidden">
                 <div 
                     draggable="true"
                     ondragstart="onPanelDragStart(event, 'media')"
@@ -271,82 +772,83 @@
                 >
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-grip-vertical text-slate-400 text-sm"></i>
-                        <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+                        <div class="flex items-end gap-[2px] h-3.5 px-1">
+                            <span class="w-[3px] eq-bar-item bg-red-600 rounded-full animate-eq-1"></span>
+                            <span class="w-[3px] eq-bar-item bg-amber-500 rounded-full animate-eq-2"></span>
+                            <span class="w-[3px] eq-bar-item bg-emerald-600 rounded-full animate-eq-3"></span>
+                        </div>
                         <span class="text-xs font-black uppercase text-slate-800 tracking-wider flex items-center gap-1 font-outfit">
                             <i class="fa-brands fa-youtube text-red-600 text-sm"></i> TV Siaran
                         </span>
                     </div>
 
-                    <!-- Quick Size Preset Buttons -->
-                    <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-lg border border-slate-200" onmousedown="event.stopPropagation()">
-                        <button onclick="setMediaWidth(28)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded text-slate-600 hover:bg-white transition" data-size="28" title="Ukuran TV Kecil (28%)">
+                    <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 shadow-inner" onmousedown="event.stopPropagation()">
+                        <button onclick="setMediaWidth(28)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded-lg text-slate-600 hover:bg-white transition" data-size="28" title="Ukuran TV Kecil (28%)">
                             Kecil
                         </button>
-                        <button onclick="setMediaWidth(37)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded bg-kejati-primary text-white shadow-xs transition" data-size="37" title="Ukuran TV Normal (37%)">
+                        <button onclick="setMediaWidth(37)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded-lg bg-kejati-primary text-white shadow-xs transition" data-size="37" title="Ukuran TV Normal (37%)">
                             Normal
                         </button>
-                        <button onclick="setMediaWidth(52)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded text-slate-600 hover:bg-white transition" data-size="52" title="Ukuran TV Besar (52%)">
+                        <button onclick="setMediaWidth(52)" class="size-preset-btn px-2 py-0.5 text-[10px] font-extrabold rounded-lg text-slate-600 hover:bg-white transition" data-size="52" title="Ukuran TV Besar (52%)">
                             Besar
                         </button>
-                        <button onclick="toggleVideoExpand()" id="btn-expand-video" class="px-2 py-0.5 text-[10px] font-extrabold rounded text-red-600 hover:bg-red-50 transition" title="Perbesar / Perkecil Kotak Video">
+                        <button onclick="toggleVideoExpand()" id="btn-expand-video" class="px-2 py-0.5 text-[10px] font-extrabold rounded-lg text-red-600 hover:bg-red-50 transition" title="Perbesar / Perkecil Kotak Video">
                             <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Video Iframe Embed -->
-                <div class="relative w-full flex-grow min-h-[180px] bg-black rounded-xl overflow-hidden shadow-inner border border-slate-200">
+                <!-- Video Iframe Embed (Terisolasi GPU Layer + Bebas Error 153) -->
+                <div class="youtube-gpu-stage relative w-full flex-grow min-h-[180px] bg-slate-950 rounded-xl overflow-hidden border-2 border-slate-800">
                     <iframe 
                         id="youtube-iframe"
-                        class="w-full h-full object-cover"
+                        class="w-full h-full block"
                         src="" 
                         title="YouTube Media Player"
                         frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        loading="eager"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowfullscreen>
                     </iframe>
                 </div>
 
-                <!-- Video Info / Controls Preset -->
                 <div class="mt-2.5 p-2 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2 overflow-hidden">
-                        <div class="w-7 h-7 rounded-full bg-red-600 text-white flex items-center justify-center font-black text-xs flex-shrink-0">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-red-700 text-white flex items-center justify-center font-black text-xs flex-shrink-0 shadow-sm">
                             <i class="fa-solid fa-play"></i>
                         </div>
                         <div class="truncate">
-                            <p class="text-[11px] font-black text-slate-800 truncate leading-tight">Saluran Resmi Kejaksaan Tinggi NTB</p>
-                            <p class="text-[9px] text-slate-500 font-bold truncate">Tarik garis pemisah di samping untuk atur lebar</p>
+                            <p id="display-yt-title" class="text-[11px] font-black text-slate-800 truncate leading-tight">Saluran Resmi Kejaksaan Tinggi NTB</p>
+                            <p id="display-yt-subtitle" class="text-[9px] text-slate-500 font-bold truncate">Tarik garis pemisah di samping untuk atur lebar</p>
                         </div>
                     </div>
-                    <button onclick="openAdminModal()" class="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-300 text-[10px] font-bold text-slate-700 rounded-lg transition flex-shrink-0">
-                        <i class="fa-solid fa-link text-red-600 mr-1"></i> Ubah Video
+                    <button onclick="syncFromGoogleSheets(true)" class="px-2.5 py-1 bg-white hover:bg-emerald-50 border border-slate-300 border-b-2 text-[10px] font-bold text-slate-700 rounded-lg transition flex-shrink-0 shadow-xs" title="Tarik pembaruan video & teks terbaru dari Google Sheets">
+                        <i class="fa-solid fa-rotate text-emerald-600 mr-1"></i> Sync Sheet
                     </button>
                 </div>
             </div>
 
-            <!-- LOCKER NOTICE BOX (PENGINGAT MENITIPKAN HP/BARANG ELEKTRONIK) -->
-            <div id="locker-notice-box" class="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 rounded-2xl p-3.5 text-white shadow-md border-2 border-amber-300 flex items-center gap-3 relative overflow-hidden flex-shrink-0">
-                <!-- Background Decor Pattern -->
-                <div class="absolute -right-4 -bottom-4 text-white/10 text-7xl font-black">
+            <!-- LOCKER NOTICE BOX (Teks dari Google Sheets) -->
+            <div id="locker-notice-box" class="locker-3d-banner rounded-2xl p-3.5 text-white flex items-center gap-3.5 relative overflow-hidden flex-shrink-0">
+                <div class="absolute -right-3 -bottom-4 text-white/10 text-7xl font-black pointer-events-none">
                     <i class="fa-solid fa-vault"></i>
                 </div>
 
-                <!-- Icon Box -->
-                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md flex items-center justify-center flex-shrink-0 text-white text-2xl border border-white/30 shadow-sm">
-                    <i class="fa-solid fa-mobile-screen-button animate-bounce"></i>
+                <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 text-white text-2xl border border-white/40 shadow-md">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
                 </div>
 
-                <!-- Text Content -->
                 <div class="z-10">
                     <div class="flex items-center gap-1.5 mb-0.5">
-                        <span class="bg-white text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow-xs">
+                        <span id="display-loker-badge" class="bg-white text-amber-800 text-[9px] font-black uppercase px-2 py-0.5 rounded-md tracking-wider shadow-sm">
                             HIMBAUAN KEPADA PENGUNJUNG
                         </span>
                     </div>
-                    <h3 class="text-xs lg:text-sm font-black font-outfit uppercase leading-tight tracking-wide text-amber-50">
+                    <h3 id="display-loker-title" class="text-xs lg:text-sm font-black font-outfit uppercase leading-tight tracking-wide text-amber-50">
                         Harap Menitipkan Barang Elektronik & Handphone
                     </h3>
-                    <p class="text-[10px] text-amber-100 font-semibold leading-tight mt-0.5">
+                    <p id="display-loker-desc" class="text-[10px] text-amber-100 font-semibold leading-tight mt-0.5">
                         Demi kenyamanan dan keamanan area pelayanan terbatas, silakan gunakan loker penyimpanan di area PTSP / Penerima Tamu.
                     </p>
                 </div>
@@ -357,34 +859,38 @@
     </main>
 
     <!-- FOOTER RUNNING TEXT & ACTIONS -->
-    <footer class="w-full bright-glass-header border-t-2 border-kejati-border flex-shrink-0 z-30">
+    <footer class="w-full glass-3d-header border-t-2 border-kejati-border flex-shrink-0 z-30 relative">
         <div class="max-w-[1920px] mx-auto flex items-center justify-between">
             
-            <!-- Announcement Label -->
-            <div class="bg-kejati-primary text-white font-black px-5 py-2.5 flex items-center gap-2 flex-shrink-0 z-10 shadow-md">
-                <i class="fa-solid fa-bullhorn text-sm animate-bounce"></i>
+            <div class="bg-gradient-to-r from-kejati-primary to-emerald-600 text-white font-black px-5 py-2.5 flex items-center gap-2 flex-shrink-0 z-10 shadow-md">
+                <i class="fa-solid fa-bullhorn text-sm"></i>
                 <span class="uppercase tracking-wider text-xs font-outfit">PENGUMUMAN:</span>
             </div>
 
-            <!-- Marquee Running Text -->
-            <div class="overflow-hidden whitespace-nowrap w-full py-2 relative flex items-center bg-white/60">
-                <div id="running-text" class="inline-block animate-marquee text-xs lg:text-sm font-bold text-kejati-dark tracking-wide">
-                    Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.
+            <div class="overflow-hidden whitespace-nowrap w-full py-2 relative flex items-center bg-white/80">
+                <div id="running-text" class="marquee-track inline-block animate-marquee text-xs lg:text-sm font-bold text-kejati-dark tracking-wide">
+                    Selamat Datang di Papan Informasi Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.
                 </div>
             </div>
 
-            <!-- Action Controls -->
             <div class="flex items-center gap-1.5 px-3 flex-shrink-0 z-10 border-l-2 border-kejati-border bg-white py-1">
-                <button onclick="swapMainPanels()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Tukar Posisi Kiri / Kanan">
+                <button onclick="syncFromGoogleSheets(true)" id="sync-status-badge" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-emerald-50 border border-slate-200 text-[10px] font-black text-slate-600 transition" title="Klik untuk tarik pembaruan dari Google Sheets">
+                    <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                    <span id="sync-status-text">Mode Lokal</span>
+                </button>
+                <button onclick="toggle3DBackground()" id="btn-toggle-3d" class="p-2 bg-white hover:bg-emerald-100 text-kejati-primary rounded-xl transition border border-kejati-border border-b-2 opacity-60" title="Aktif / Matikan Animasi 3D Latar (Matikan agar YouTube Paling Lancar)">
+                    <i class="fa-solid fa-cube text-base"></i>
+                </button>
+                <button onclick="swapMainPanels()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Tukar Posisi Kiri / Kanan">
                     <i class="fa-solid fa-right-left text-base"></i>
                 </button>
-                <button onclick="resetLayout()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Reset Ukuran & Posisi Tata Letak">
+                <button onclick="resetLayout()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Reset Ukuran & Posisi Tata Letak">
                     <i class="fa-solid fa-rotate-left text-base"></i>
                 </button>
-                <button onclick="toggleFullscreen()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Layar Penuh TV">
+                <button onclick="toggleFullscreen()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Layar Penuh TV">
                     <i class="fa-solid fa-expand text-base"></i>
                 </button>
-                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border" title="Pengaturan Waktu & Data Piket">
+                <button onclick="openAdminModal()" class="p-2 hover:bg-kejati-light text-kejati-primary rounded-xl transition border border-kejati-border border-b-2" title="Pengaturan Jam & Pegawai Piket">
                     <i class="fa-solid fa-gear text-base"></i>
                 </button>
             </div>
@@ -392,15 +898,18 @@
         </div>
     </footer>
 
-    <!-- ADMIN MODAL -->
-    <div id="admin-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <!-- ADMIN MODAL (KHUSUS PENGATURAN JAM & NAMA PEGAWAI PIKET SAJA) -->
+    <div id="admin-modal" class="fixed inset-0 bg-slate-900/75 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-200">
         <div class="bg-white border-2 border-kejati-primary rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden m-4">
             
             <!-- Modal Header -->
-            <div class="px-6 py-4 bg-kejati-primary text-white flex justify-between items-center">
+            <div class="px-6 py-4 bg-gradient-to-r from-kejati-primary to-emerald-700 text-white flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-sliders text-kejati-goldaccent text-xl"></i>
-                    <h2 class="text-xl font-bold font-outfit">Pengaturan Waktu, Data Piket & Media YouTube</h2>
+                    <div>
+                        <h2 class="text-lg font-bold font-outfit leading-tight">Pengaturan Jam & Nama Pegawai Piket</h2>
+                        <p class="text-[11px] text-emerald-100 font-semibold">Pengaturan teks lainnya, YouTube, slide & layanan diatur langsung melalui Google Sheets.</p>
+                    </div>
                 </div>
                 <button onclick="closeAdminModal()" class="text-white/80 hover:text-white text-xl">
                     <i class="fa-solid fa-xmark"></i>
@@ -410,7 +919,7 @@
             <!-- Modal Body -->
             <div class="p-6 overflow-y-auto flex-grow space-y-6 bg-slate-50">
                 
-                <!-- Time & Duty Hours Settings -->
+                <!-- 1. Pengaturan Jam & Waktu Layar -->
                 <div class="bg-white p-4 rounded-xl border-2 border-emerald-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between flex-wrap gap-2">
                         <h3 class="text-xs font-black text-kejati-primary uppercase tracking-wider">
@@ -429,8 +938,8 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Manual (Ketik)</label>
-                            <input type="text" id="input-manual-date" placeholder="DD-MM-YYYY (cth: 24-11-2026)" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50 disabled:bg-slate-200">
-                            <span class="text-[10px] text-slate-400">Format: HH-BB-TTTT (cth: 24-11-2026)</span>
+                            <input type="text" id="input-manual-date" placeholder="DD-MM-YYYY (cth: 26-11-2026)" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none disabled:opacity-50 disabled:bg-slate-200">
+                            <span class="text-[10px] text-slate-400">Format: HH-BB-TTTT</span>
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Manual (Ketik)</label>
@@ -440,34 +949,13 @@
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Jam Operasional Piket</label>
                             <input type="text" id="input-duty-hours" placeholder="Contoh: 07.00 - 16.00 WITA" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
-                            <span class="text-[10px] text-slate-400">Tampil di bagian bawah kartu hari</span>
+                            <span class="text-[10px] text-slate-400">Tampil di bawah kartu hari</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- YouTube & General Info Settings -->
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-3">
-                    <h3 class="text-xs font-bold text-kejati-primary uppercase tracking-wider"><i class="fa-brands fa-youtube mr-2 text-red-600"></i>Pengaturan YouTube & Header</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Instansi</label>
-                            <input type="text" id="input-office-name" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">YouTube Video / Live Stream ID or URL</label>
-                            <input type="text" id="input-youtube-id" placeholder="Contoh: dQw4w9WgXcQ atau URL YouTube" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Teks Running Text</label>
-                            <input type="text" id="input-running-text" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-800 focus:border-kejati-primary outline-none">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Days & Officer Form Blocks -->
-                <div id="admin-days-container" class="space-y-6">
-                    <!-- Dynamic Days Form Rendered via JS -->
-                </div>
+                <!-- 2. Pengaturan Nama Pegawai Piket (4 Hari) -->
+                <div id="admin-days-container" class="space-y-6"></div>
 
             </div>
 
@@ -475,7 +963,7 @@
             <div class="px-6 py-4 bg-slate-100 border-t border-slate-200 flex justify-end gap-3">
                 <button onclick="closeAdminModal()" class="px-5 py-2 bg-slate-300 hover:bg-slate-400 rounded-xl text-xs font-bold text-slate-700 transition">Batal</button>
                 <button onclick="saveAdminSettings()" class="px-6 py-2 bg-kejati-primary hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition shadow-md">
-                    <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Semua Perubahan
+                    <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
                 </button>
             </div>
 
@@ -484,7 +972,30 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Data Piket Kosong (Siap Diisi)
+        // =========================================================================
+        // URL WEB APP GOOGLE APPS SCRIPT
+        // =========================================================================
+        const GOOGLE_SHEET_API_URL = "https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnQTrlHa0qdgDfghbbn_xHVPffMgdpqEW8TxbHltvHGQqh4vY3-XwRbFlgPHMDrk5qxkCqdOZzMfWTm90K2kYA-Bcw94xC0b_tVJ7kVyVvSGmjf6-POz7xqBY_QneMzOAGxfF3Cb91GiCmXaKeetNpwbmJgtPjbn2a33HOil4t2OG6lv79juE9BVeN7WV7LmIp1PSNWrq5PPRtC7G6giCIOVpJOgDKzeP_URFkkaJ9SdSGN654s2snwUDPPqQs1e48tXFLhvR2rh3qFPcmeZIxBWg5Fw_Q&lib=MqBpudvQgD7xkac5wPY_86m9In5uoXW31";
+        const SYNC_INTERVAL_MS = 60000;
+
+        const DEFAULT_LOGO_URL = "https://www.kejaksaan.go.id/assets/img/webphada.png";
+
+        const FALLBACK_LOGO_SVG = "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+                <defs>
+                    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f59e0b"/>
+                        <stop offset="50%" stop-color="#047857"/>
+                        <stop offset="100%" stop-color="#b45309"/>
+                    </linearGradient>
+                </defs>
+                <circle cx="100" cy="100" r="92" fill="url(#g)" stroke="#fef3c7" stroke-width="6"/>
+                <circle cx="100" cy="100" r="76" fill="none" stroke="#fde68a" stroke-width="3" stroke-dasharray="6 4"/>
+                <text x="100" y="96" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="22">KEJAKSAAN</text>
+                <text x="100" y="122" text-anchor="middle" fill="#fef3c7" font-family="sans-serif" font-weight="800" font-size="16">RI • NTB</text>
+            </svg>`
+        );
+
         const defaultSchedule = [
             {
                 dayName: "SENIN",
@@ -528,24 +1039,560 @@
             }
         ];
 
+        const defaultServices = [
+            { title: "Pelayanan Hukum (DATUN)", badge: "Gratis", description: "Konsultasi dan bantuan hukum bidang Perdata & Tata Usaha Negara bagi masyarakat maupun instansi pemerintah.", footer: "Loket DATUN / PTSP", theme: "hijau" },
+            { title: "Pengaduan Masyarakat (LAPDU)", badge: "Rahasia", description: "Penerimaan laporan dugaan tindak pidana korupsi & pelanggaran hukum dengan perlindungan kerahasiaan pelapor.", footer: "Identitas Pelapor Dilindungi", theme: "emas" },
+            { title: "Informasi Perkara & Surat", badge: "Transparan", description: "Layanan pengecekan status penanganan perkara Pidum & Pidsus serta pendaftaran persuratan resmi masuk.", footer: "Respon Cepat Terukur", theme: "biru" },
+            { title: "Penerangan Hukum & Intelijen", badge: "Edukasi", description: "Program Jaksa Masuk Sekolah (JMS), Jaksa Menyapa, Jaga Desa, serta pengawasan & posko intelijen daerah.", footer: "Bidang Intelijen", theme: "teal" },
+            { title: "Besuk & Barang Bukti", badge: "Bebas Pungli", description: "Pengurusan surat izin besuk tahanan dan layanan pengembalian barang bukti sesuai putusan berkekuatan hukum tetap.", footer: "Tanpa Biaya", theme: "indigo" },
+            { title: "Whistle Blowing System (WBS)", badge: "Pengawasan", description: "Kanal resmi pelaporan indikasi pelanggaran disiplin, kode etik, gratifikasi, atau pungli oleh oknum aparatur.", footer: "Bidang Pengawasan", theme: "merah" }
+        ];
+
+        const defaultGuestFlow = [
+            { step: "01", title: "Registrasi PTSP", description: "Lapor maksud kunjungan ke petugas PTSP & tunjukkan kartu identitas resmi (KTP/SIM).", footer: "Meja Penerima Tamu", theme: "hijau" },
+            { step: "02", title: "Titip Elektronik", description: "Titipkan handphone & perangkat elektronik di loker penyimpanan berkunci area PTSP.", footer: "Area Loker Aman", theme: "emas" },
+            { step: "03", title: "Kartu Visitor Pass", description: "Terima dan kenakan kartu tanda pengenal tamu selama berada di lingkungan kantor.", footer: "Wajib Dikenakan", theme: "hijau" },
+            { step: "04", title: "Layanan Prima", description: "Menuju ruang/loket layanan sesuai tujuan dengan pendampingan petugas piket siaga.", footer: "Cepat & Humanis", theme: "hijau" }
+        ];
+
+        const SERVICE_THEME_STYLES = {
+            hijau:  { card: 'glass-info-card',      iconBg: 'from-emerald-600 to-kejati-primary', icon: 'fa-handshake-angle', badge: 'bg-emerald-100 text-kejati-primary', title: 'text-kejati-dark', desc: 'text-slate-600', foot: 'text-kejati-primary border-emerald-200/70', footIcon: 'fa-circle-check' },
+            emas:   { card: 'glass-info-card-gold', iconBg: 'from-amber-500 to-amber-700',        icon: 'fa-bullhorn',        badge: 'bg-amber-200 text-amber-900',        title: 'text-amber-950',   desc: 'text-slate-700', foot: 'text-amber-800 border-amber-300/70',        footIcon: 'fa-lock' },
+            biru:   { card: 'glass-info-card',      iconBg: 'from-sky-600 to-blue-700',           icon: 'fa-file-shield',     badge: 'bg-sky-100 text-sky-800',            title: 'text-kejati-dark', desc: 'text-slate-600', foot: 'text-sky-700 border-emerald-200/70',        footIcon: 'fa-bolt' },
+            teal:   { card: 'glass-info-card',      iconBg: 'from-emerald-600 to-teal-700',       icon: 'fa-graduation-cap',  badge: 'bg-teal-100 text-teal-800',          title: 'text-kejati-dark', desc: 'text-slate-600', foot: 'text-emerald-700 border-emerald-200/70',    footIcon: 'fa-compass' },
+            indigo: { card: 'glass-info-card',      iconBg: 'from-indigo-600 to-indigo-800',      icon: 'fa-id-card-clip',    badge: 'bg-indigo-100 text-indigo-800',      title: 'text-kejati-dark', desc: 'text-slate-600', foot: 'text-indigo-700 border-emerald-200/70',     footIcon: 'fa-hand-holding-heart' },
+            merah:  { card: 'glass-info-card-gold', iconBg: 'from-red-600 to-rose-700',           icon: 'fa-user-secret',     badge: 'bg-red-100 text-red-800',            title: 'text-amber-950',   desc: 'text-slate-700', foot: 'text-red-700 border-amber-300/70',          footIcon: 'fa-shield' }
+        };
+
+        const FLOW_ICONS = ['fa-id-card', 'fa-vault', 'fa-address-card', 'fa-user-check'];
+
+        const SLIDE_META = [
+            { id: 0, shortLabel: "Piket",        defaultTitle: "Papan Penugasan Piket 4 Hari",                      icon: "fa-clipboard-user" },
+            { id: 1, shortLabel: "Layanan PTSP", defaultTitle: "Layanan Publik Terpadu (PTSP) & Jam Pelayanan",     icon: "fa-handshake-angle" },
+            { id: 2, shortLabel: "WBK & Alur",   defaultTitle: "Zona Integritas (WBK/WBBM) & Alur Kunjungan Tamu",  icon: "fa-scale-balanced" }
+        ];
+
         let state = {
+            badgeHeader: "KEJAKSAAN RI",
+            subtitleHeader: "Papan Informasi Digital & Jadwal Piket",
             officeName: "KEJAKSAAN TINGGI NUSA TENGGARA BARAT",
-            youtubeVideoId: "9689Bhx7N2A",
-            runningText: "Selamat Datang di Papan Piket Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.",
+            logoUrl: DEFAULT_LOGO_URL,
+            youtubeVideoUrl: "https://www.youtube.com/watch?v=9689Bhx7N2A",
+            youtubeTitle: "Saluran Resmi Kejaksaan Tinggi NTB",
+            youtubeSubtitle: "Tarik garis pemisah di samping untuk atur lebar",
+            locker: {
+                badge: "HIMBAUAN KEPADA PENGUNJUNG",
+                title: "Harap Menitipkan Barang Elektronik & Handphone",
+                desc: "Demi kenyamanan dan keamanan area pelayanan terbatas, silakan gunakan loker penyimpanan di area PTSP / Penerima Tamu."
+            },
+            runningText: "Selamat Datang di Papan Informasi Digital Kejaksaan Tinggi Nusa Tenggara Barat • Selalu Utamakan Pelayanan Prima, Integritas, dan Transparansi (WBK/WBBM) • Bagi Pengunjung PTSP Harap Menitipkan Barang Elektronik dan Handphone di Loker Penyimpanan.",
+            ptsp: {
+                badge: "PTSP KEJATI NTB",
+                title: "Pelayanan Terpadu Satu Pintu — Cepat, Akuntabel & Tanpa Biaya",
+                monThu: "08.00 – 16.00 WITA",
+                fri: "08.00 – 16.30 WITA",
+                hotlineLabel: "Hotline & Informasi PTSP",
+                hotline: "Call Center Kejaksaan 1500-222 • PTSP Kejati NTB",
+                web: "kejati-ntb.kejaksaan.go.id",
+                address: "Jl. Langko No. 75, Mataram, NTB"
+            },
+            wbk: {
+                badge: "ZONA INTEGRITAS • MENUJU WBK / WBBM",
+                subbadge: "Kejaksaan Tinggi NTB",
+                title: "Tolak Gratifikasi, Pungli & Suap — Melayani Sepenuh Hati",
+                maklumat: "Dengan ini kami menyatakan sanggup menyelenggarakan pelayanan publik sesuai standar yang ditetapkan secara transparan, akuntabel, dan bebas dari korupsi.",
+                alurTitle: "Alur Kunjungan & Standar Pelayanan Tamu",
+                alurBadge: "4 Langkah Mudah",
+                j1Label: "Zero Pungli",      j1Text: "Seluruh Layanan PTSP 100% Gratis",
+                j2Label: "Aman & Tertib",    j2Text: "Berpakaian Rapi, Sopan & Patuhi Protokol",
+                j3Label: "Survei Kepuasan",  j3Text: "Beri Penilaian Layanan di Loket PTSP"
+            },
+            slideTitles: [
+                "Papan Penugasan Piket 4 Hari",
+                "Layanan Publik Terpadu (PTSP) & Jam Pelayanan",
+                "Zona Integritas (WBK/WBBM) & Alur Kunjungan Tamu"
+            ],
+            slideSettings: {
+                autoPlay: true,
+                durationSec: 12,
+                enabledSlides: [true, true, true]
+            },
             timeSettings: {
-                mode: "auto", // "auto" or "manual"
+                mode: "auto",
                 offsetMs: 0,
                 dutyHours: "07.00 - 16.00 WITA"
             },
             layout: {
                 mediaWidthPercent: 37,
                 swapped: false,
-                videoExpanded: false
+                videoExpanded: false,
+                enable3D: false, // Default FALSE agar YouTube langsung lancar di Smart TV
+                tvSmoothV2: true
             },
-            schedule: []
+            schedule: [],
+            services: [],
+            guestFlow: []
         };
 
-        // Get effective current Date (Auto or Manual offset)
+        let lastRenderedYouTubeKey = "";
+        let lastRenderedLogoUrl = "";
+        let lastSyncedPayloadHash = "";
+
+        function escapeHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function isYes(val, defaultVal = true) {
+            if (val === undefined || val === null || String(val).trim() === '') return defaultVal;
+            const v = String(val).trim().toUpperCase();
+            return !(v === 'TIDAK' || v === 'NO' || v === 'FALSE' || v === '0' || v === 'NONAKTIF');
+        }
+
+        // ========== SMART YOUTUBE URL PARSER ==========
+        function parseYouTubeInput(urlOrId) {
+            if (!urlOrId) return { type: 'video', id: '9689Bhx7N2A' };
+            const clean = String(urlOrId).trim();
+
+            if (/youtube\.com\/playlist/i.test(clean)) {
+                const listMatch = clean.match(/[?&]list=([a-zA-Z0-9_-]+)/);
+                if (listMatch && listMatch[1]) {
+                    return { type: 'playlist', id: listMatch[1] };
+                }
+            }
+
+            if (/^(PL|UU|OL)[a-zA-Z0-9_-]{10,}$/.test(clean)) {
+                return { type: 'playlist', id: clean };
+            }
+
+            const videoMatch = clean.match(
+                /(?:youtu\.be\/|(?:www\.|m\.|music\.)?youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/|shorts\/|live\/))([a-zA-Z0-9_-]{11})/i
+            );
+            if (videoMatch && videoMatch[1]) {
+                return { type: 'video', id: videoMatch[1] };
+            }
+
+            if (/^[a-zA-Z0-9_-]{11}$/.test(clean)) {
+                return { type: 'video', id: clean };
+            }
+
+            return { type: 'video', id: clean };
+        }
+
+        function updateYouTubeEmbed() {
+            const iframe = document.getElementById('youtube-iframe');
+            const parsed = parseYouTubeInput(state.youtubeVideoUrl);
+            const key = `${parsed.type}:${parsed.id}`;
+            if (key === lastRenderedYouTubeKey) return;
+            lastRenderedYouTubeKey = key;
+
+            if (parsed.type === 'playlist') {
+                iframe.src = `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(parsed.id)}&autoplay=1&mute=1&loop=1&rel=0&iv_load_policy=3&modestbranding=1`;
+            } else {
+                iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(parsed.id)}?autoplay=1&mute=1&loop=1&playlist=${encodeURIComponent(parsed.id)}&rel=0&playsinline=1&iv_load_policy=3&modestbranding=1`;
+            }
+        }
+
+        // ========== GOOGLE SHEETS FULL AUTO-SYNC ENGINE ==========
+        function setSyncBadge(status, text) {
+            const dot = document.getElementById('sync-status-dot');
+            const label = document.getElementById('sync-status-text');
+            if (!dot || !label) return;
+
+            dot.className = 'w-2 h-2 rounded-full ';
+            if (status === 'online') dot.className += 'bg-emerald-500';
+            else if (status === 'syncing') dot.className += 'bg-sky-500';
+            else if (status === 'error') dot.className += 'bg-amber-500';
+            else dot.className += 'bg-slate-400';
+
+            label.innerText = text;
+        }
+
+        async function syncFromGoogleSheets(forceApply = false) {
+            const apiUrl = (GOOGLE_SHEET_API_URL || '').trim();
+            if (!apiUrl) {
+                setSyncBadge('local', 'Mode Lokal');
+                return false;
+            }
+
+            if (forceApply) setSyncBadge('syncing', 'Menyinkronkan...');
+
+            try {
+                const separator = apiUrl.includes('?') ? '&' : '?';
+                const response = await fetch(`${apiUrl}${separator}t=${Date.now()}`, { method: 'GET', cache: 'no-store' });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const data = await response.json();
+                const compareData = {
+                    settings: data.settings || {},
+                    schedule: data.schedule || [],
+                    services: data.services || [],
+                    guestFlow: data.guestFlow || []
+                };
+                const payloadHash = JSON.stringify(compareData);
+
+                const now = getEffectiveNow();
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+
+                if (!forceApply && payloadHash === lastSyncedPayloadHash) {
+                    setSyncBadge('online', `Sheet Aktif • ${hh}:${mm}`);
+                    return true;
+                }
+
+                lastSyncedPayloadHash = payloadHash;
+                let slideConfigChanged = false;
+
+                if (data.settings) {
+                    const s = data.settings;
+                    if (s.BADGE_HEADER) state.badgeHeader = s.BADGE_HEADER;
+                    if (s.SUBJUDUL_HEADER) state.subtitleHeader = s.SUBJUDUL_HEADER;
+                    if (s.NAMA_INSTANSI) state.officeName = s.NAMA_INSTANSI;
+                    if (s.LOGO_URL) state.logoUrl = s.LOGO_URL;
+
+                    if (s.YOUTUBE_URL || s.YOUTUBE_ID) state.youtubeVideoUrl = s.YOUTUBE_URL || s.YOUTUBE_ID;
+                    if (s.YOUTUBE_JUDUL) state.youtubeTitle = s.YOUTUBE_JUDUL;
+                    if (s.YOUTUBE_SUBJUDUL) state.youtubeSubtitle = s.YOUTUBE_SUBJUDUL;
+
+                    if (s.LOKER_BADGE) state.locker.badge = s.LOKER_BADGE;
+                    if (s.LOKER_JUDUL) state.locker.title = s.LOKER_JUDUL;
+                    if (s.LOKER_DESKRIPSI) state.locker.desc = s.LOKER_DESKRIPSI;
+
+                    if (s.RUNNING_TEXT) state.runningText = s.RUNNING_TEXT;
+                    if (s.JAM_PIKET) state.timeSettings.dutyHours = s.JAM_PIKET;
+
+                    if (s.JUDUL_SLIDE_1) state.slideTitles[0] = s.JUDUL_SLIDE_1;
+                    if (s.JUDUL_SLIDE_2) state.slideTitles[1] = s.JUDUL_SLIDE_2;
+                    if (s.JUDUL_SLIDE_3) state.slideTitles[2] = s.JUDUL_SLIDE_3;
+
+                    if (s.PTSP_BADGE) state.ptsp.badge = s.PTSP_BADGE;
+                    if (s.PTSP_JUDUL) state.ptsp.title = s.PTSP_JUDUL;
+                    if (s.JAM_PTSP_SENIN_KAMIS) state.ptsp.monThu = s.JAM_PTSP_SENIN_KAMIS;
+                    if (s.JAM_PTSP_JUMAT) state.ptsp.fri = s.JAM_PTSP_JUMAT;
+                    if (s.HOTLINE_LABEL) state.ptsp.hotlineLabel = s.HOTLINE_LABEL;
+                    if (s.HOTLINE_PTSP) state.ptsp.hotline = s.HOTLINE_PTSP;
+                    if (s.WEBSITE) state.ptsp.web = s.WEBSITE;
+                    if (s.ALAMAT) state.ptsp.address = s.ALAMAT;
+
+                    if (s.WBK_BADGE) state.wbk.badge = s.WBK_BADGE;
+                    if (s.WBK_SUBBADGE) state.wbk.subbadge = s.WBK_SUBBADGE;
+                    if (s.WBK_JUDUL) state.wbk.title = s.WBK_JUDUL;
+                    if (s.MAKLUMAT) state.wbk.maklumat = s.MAKLUMAT;
+                    if (s.ALUR_JUDUL) state.wbk.alurTitle = s.ALUR_JUDUL;
+                    if (s.ALUR_BADGE) state.wbk.alurBadge = s.ALUR_BADGE;
+
+                    if (s.JAMINAN_1_LABEL) state.wbk.j1Label = s.JAMINAN_1_LABEL;
+                    if (s.JAMINAN_1_TEKS) state.wbk.j1Text = s.JAMINAN_1_TEKS;
+                    if (s.JAMINAN_2_LABEL) state.wbk.j2Label = s.JAMINAN_2_LABEL;
+                    if (s.JAMINAN_2_TEKS) state.wbk.j2Text = s.JAMINAN_2_TEKS;
+                    if (s.JAMINAN_3_LABEL) state.wbk.j3Label = s.JAMINAN_3_LABEL;
+                    if (s.JAMINAN_3_TEKS) state.wbk.j3Text = s.JAMINAN_3_TEKS;
+
+                    if (s.SLIDE_OTOMATIS !== undefined) {
+                        const newAuto = isYes(s.SLIDE_OTOMATIS, true);
+                        if (newAuto !== state.slideSettings.autoPlay) {
+                            state.slideSettings.autoPlay = newAuto;
+                            slideConfigChanged = true;
+                        }
+                    }
+                    if (s.DURASI_SLIDE_DETIK) {
+                        const newDur = Math.min(120, Math.max(4, parseInt(s.DURASI_SLIDE_DETIK, 10) || 12));
+                        if (newDur !== state.slideSettings.durationSec) {
+                            state.slideSettings.durationSec = newDur;
+                            slideConfigChanged = true;
+                        }
+                    }
+                    const newEnabled = [
+                        isYes(s.AKTIF_SLIDE_1, true),
+                        isYes(s.AKTIF_SLIDE_2, true),
+                        isYes(s.AKTIF_SLIDE_3, true)
+                    ];
+                    if (!newEnabled.some(Boolean)) newEnabled[0] = true;
+                    if (JSON.stringify(newEnabled) !== JSON.stringify(state.slideSettings.enabledSlides)) {
+                        state.slideSettings.enabledSlides = newEnabled;
+                        slideConfigChanged = true;
+                    }
+                }
+
+                if (Array.isArray(data.schedule) && data.schedule.length > 0) {
+                    state.schedule = data.schedule;
+                }
+                if (Array.isArray(data.services) && data.services.length > 0) {
+                    state.services = data.services;
+                }
+                if (Array.isArray(data.guestFlow) && data.guestFlow.length > 0) {
+                    state.guestFlow = data.guestFlow;
+                }
+
+                syncCurrentDayHighlight();
+                applyAllLogos();
+                renderDashboard();
+                updateYouTubeEmbed();
+                persistState();
+
+                const activeIndices = getEnabledSlideIndices();
+                if (!activeIndices.includes(currentSlideIdx)) {
+                    currentSlideIdx = activeIndices[0];
+                    slideConfigChanged = true;
+                }
+                updateSlideHeaderAndView(false);
+                if (slideConfigChanged) restartSlideTimer();
+
+                setSyncBadge('online', `Sheet Aktif • ${hh}:${mm}`);
+                return true;
+            } catch (err) {
+                console.warn('Gagal sinkronisasi Google Sheets:', err);
+                setSyncBadge('error', 'Offline (Cache)');
+                return false;
+            }
+        }
+
+        // ========== MULTI-SLIDE ENGINE ==========
+        let currentSlideIdx = 0;
+        let slideTimer = null;
+        let isModalOpen = false;
+
+        function getEnabledSlideIndices() {
+            const arr = (state.slideSettings && Array.isArray(state.slideSettings.enabledSlides))
+                ? state.slideSettings.enabledSlides.slice(0, SLIDE_META.length)
+                : [true, true, true];
+            const enabled = [];
+            for (let i = 0; i < SLIDE_META.length; i++) {
+                if (arr[i] !== false) enabled.push(i);
+            }
+            return enabled.length > 0 ? enabled : [0];
+        }
+
+        function triggerSilkTransitionSweep() {
+            const sweepEl = document.getElementById('transition-silk');
+            if (!sweepEl) return;
+            sweepEl.classList.remove('sweeping');
+            void sweepEl.offsetWidth;
+            sweepEl.classList.add('sweeping');
+        }
+
+        function renderSlidePills() {
+            const pillsContainer = document.getElementById('slide-pills');
+            const enabled = getEnabledSlideIndices();
+            pillsContainer.innerHTML = '';
+
+            enabled.forEach((slideIdx) => {
+                const meta = SLIDE_META[slideIdx];
+                const isActive = slideIdx === currentSlideIdx;
+                const slideTitle = (state.slideTitles && state.slideTitles[slideIdx]) || meta.defaultTitle;
+                pillsContainer.innerHTML += `
+                    <button
+                        onclick="goToSlide(${slideIdx})"
+                        class="px-2.5 py-0.5 rounded-lg text-[10px] font-black transition-all duration-200 flex items-center gap-1 ${isActive ? 'bg-kejati-primary text-white shadow-sm' : 'text-slate-600 hover:bg-white'}"
+                        title="${escapeHtml(slideTitle)}"
+                    >
+                        <span>${slideIdx + 1}</span>
+                        <span class="hidden xl:inline">${meta.shortLabel}</span>
+                    </button>
+                `;
+            });
+        }
+
+        function updateSlideHeaderAndView(animateHeader = true) {
+            const meta = SLIDE_META[currentSlideIdx] || SLIDE_META[0];
+            const enabled = getEnabledSlideIndices();
+            const posInEnabled = Math.max(1, enabled.indexOf(currentSlideIdx) + 1);
+            const activeTitle = (state.slideTitles && state.slideTitles[currentSlideIdx]) || meta.defaultTitle;
+
+            const titleWrap = document.getElementById('slide-header-text-wrap');
+            if (animateHeader && titleWrap) {
+                titleWrap.classList.remove('title-fade-in');
+                void titleWrap.offsetWidth;
+                titleWrap.classList.add('title-fade-in');
+            }
+
+            document.getElementById('active-slide-title').innerText = activeTitle;
+            document.getElementById('active-slide-icon').innerHTML = `<i class="fa-solid ${meta.icon} text-xs"></i>`;
+            document.getElementById('active-slide-subtitle').innerText = state.slideSettings.autoPlay
+                ? `Slide ${posInEnabled}/${enabled.length} • Transisi Otomatis (${state.slideSettings.durationSec} dtk)`
+                : `Slide ${posInEnabled}/${enabled.length} • Mode Manual (Dijeda)`;
+
+            SLIDE_META.forEach((m) => {
+                const panel = document.getElementById(`slide-panel-${m.id}`);
+                if (!panel) return;
+                if (m.id === currentSlideIdx) {
+                    panel.classList.remove('slide-exit');
+                    panel.classList.add('slide-active');
+                } else {
+                    if (panel.classList.contains('slide-active')) {
+                        panel.classList.remove('slide-active');
+                        panel.classList.add('slide-exit');
+                    } else {
+                        panel.classList.remove('slide-exit');
+                    }
+                }
+            });
+
+            const playPauseBtn = document.getElementById('btn-slide-playpause');
+            if (state.slideSettings.autoPlay) {
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                playPauseBtn.classList.add('bg-kejati-primary', 'text-white');
+                playPauseBtn.classList.remove('bg-amber-500');
+            } else {
+                playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                playPauseBtn.classList.remove('bg-kejati-primary');
+                playPauseBtn.classList.add('bg-amber-500', 'text-white');
+            }
+
+            renderSlidePills();
+        }
+
+        function restartSlideTimer() {
+            if (slideTimer) {
+                clearTimeout(slideTimer);
+                slideTimer = null;
+            }
+
+            const progressBar = document.getElementById('slide-progress-bar');
+            const enabled = getEnabledSlideIndices();
+            const durationSec = Math.max(4, Number(state.slideSettings.durationSec) || 12);
+
+            progressBar.style.transition = 'none';
+            progressBar.style.transform = 'scaleX(0)';
+
+            if (!state.slideSettings.autoPlay || enabled.length <= 1 || isModalOpen) {
+                return;
+            }
+
+            void progressBar.offsetWidth;
+            progressBar.style.transition = `transform ${durationSec}s linear`;
+            progressBar.style.transform = 'scaleX(1)';
+
+            slideTimer = setTimeout(() => {
+                nextSlide();
+            }, durationSec * 1000);
+        }
+
+        function goToSlide(idx) {
+            const enabled = getEnabledSlideIndices();
+            const target = enabled.includes(idx) ? idx : enabled[0];
+            if (target !== currentSlideIdx) triggerSilkTransitionSweep();
+            currentSlideIdx = target;
+            updateSlideHeaderAndView(true);
+            restartSlideTimer();
+        }
+
+        function nextSlide() {
+            const enabled = getEnabledSlideIndices();
+            const currPos = enabled.indexOf(currentSlideIdx);
+            const nextPos = (currPos + 1) % enabled.length;
+            if (enabled[nextPos] !== currentSlideIdx) triggerSilkTransitionSweep();
+            currentSlideIdx = enabled[nextPos];
+            updateSlideHeaderAndView(true);
+            restartSlideTimer();
+        }
+
+        function prevSlide() {
+            const enabled = getEnabledSlideIndices();
+            const currPos = enabled.indexOf(currentSlideIdx);
+            const prevPos = (currPos - 1 + enabled.length) % enabled.length;
+            if (enabled[prevPos] !== currentSlideIdx) triggerSilkTransitionSweep();
+            currentSlideIdx = enabled[prevPos];
+            updateSlideHeaderAndView(true);
+            restartSlideTimer();
+        }
+
+        function toggleSlideAutoPlay() {
+            state.slideSettings.autoPlay = !state.slideSettings.autoPlay;
+            persistState();
+            updateSlideHeaderAndView(false);
+            restartSlideTimer();
+        }
+
+        function applyAllLogos() {
+            const url = (state.logoUrl && state.logoUrl.trim() !== '') ? state.logoUrl.trim() : DEFAULT_LOGO_URL;
+            if (url === lastRenderedLogoUrl) return;
+            lastRenderedLogoUrl = url;
+
+            document.querySelectorAll('.kejaksaan-logo-img').forEach(img => {
+                img.onerror = function() {
+                    if (this.src !== FALLBACK_LOGO_SVG) this.src = FALLBACK_LOGO_SVG;
+                };
+                img.src = url;
+            });
+        }
+
+        // ========== ULTRA-LIGHTWEIGHT PARTICLE ENGINE (24 FPS, TANPA SHADOWBLUR) ==========
+        let particleAnimFrame = null;
+        let particleResizeBound = false;
+
+        function initParticlesCanvas() {
+            const canvas = document.getElementById('bg-particles-canvas');
+            if (!canvas || state.layout.enable3D === false) return;
+            const ctx = canvas.getContext('2d', { alpha: true });
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            if (!particleResizeBound) {
+                particleResizeBound = true;
+                window.addEventListener('resize', () => {
+                    width = canvas.width = window.innerWidth;
+                    height = canvas.height = window.innerHeight;
+                });
+            }
+
+            const colors = [
+                'rgba(245, 158, 11, 0.55)',
+                'rgba(5, 150, 105, 0.45)',
+                'rgba(16, 185, 129, 0.50)'
+            ];
+
+            const particles = Array.from({ length: 18 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 2.8 + 1.4,
+                speedY: -(Math.random() * 0.65 + 0.25),
+                speedX: (Math.random() - 0.5) * 0.35,
+                color: colors[Math.floor(Math.random() * colors.length)]
+            }));
+
+            let lastTime = 0;
+            const frameInterval = 1000 / 24; // Batasi 24 FPS agar hemat CPU/GPU
+
+            function renderParticles(timestamp) {
+                if (state.layout.enable3D === false) {
+                    particleAnimFrame = null;
+                    return;
+                }
+                if (document.hidden) {
+                    particleAnimFrame = requestAnimationFrame(renderParticles);
+                    return;
+                }
+                if (timestamp - lastTime >= frameInterval) {
+                    lastTime = timestamp;
+                    ctx.clearRect(0, 0, width, height);
+
+                    for (let i = 0; i < particles.length; i++) {
+                        const p = particles[i];
+                        p.y += p.speedY;
+                        p.x += p.speedX;
+
+                        if (p.y < -10) { p.y = height + 10; p.x = Math.random() * width; }
+                        if (p.x < -10) p.x = width + 10;
+                        if (p.x > width + 10) p.x = -10;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = p.color;
+                        ctx.fill();
+                    }
+                }
+                particleAnimFrame = requestAnimationFrame(renderParticles);
+            }
+
+            if (!particleAnimFrame) {
+                particleAnimFrame = requestAnimationFrame(renderParticles);
+            }
+        }
+
         function getEffectiveNow() {
             if (state.timeSettings && state.timeSettings.mode === "manual") {
                 return new Date(Date.now() + (Number(state.timeSettings.offsetMs) || 0));
@@ -553,7 +1600,6 @@
             return new Date();
         }
 
-        // Parse typed manual date & time flexibly (supports DD-MM-YYYY, DD/MM/YYYY, YYYY-MM-DD and HH:MM[:SS] or HH.MM[.SS])
         function parseManualDateTime(dateStr, timeStr) {
             const cleanDate = (dateStr || '').trim();
             const cleanTime = (timeStr || '').trim().replace(/\./g, ':');
@@ -597,40 +1643,63 @@
             return parsedDate;
         }
 
-        // Save state helper
         function persistState() {
-            localStorage.setItem('kejati_piket_empty_v1', JSON.stringify(state));
+            localStorage.setItem('kejati_piket_sheets_v1', JSON.stringify(state));
         }
 
-        // Initialize App State
         function initApp() {
-            const savedState = localStorage.getItem('kejati_piket_empty_v1');
+            const savedState = localStorage.getItem('kejati_piket_sheets_v1');
             if (savedState) {
                 try {
                     const parsed = JSON.parse(savedState);
-                    state = { ...state, ...parsed };
-                    if (!state.layout) {
-                        state.layout = { mediaWidthPercent: 37, swapped: false, videoExpanded: false };
+                    const parsedLayout = parsed.layout || {};
+                    // Migrasi otomatis satu kali ke mode TV lancar agar cache lama tidak menyalakan 3D berat
+                    if (!parsedLayout.tvSmoothV2) {
+                        parsedLayout.enable3D = false;
+                        parsedLayout.tvSmoothV2 = true;
                     }
-                    if (!state.timeSettings) {
-                        state.timeSettings = { mode: "auto", offsetMs: 0, dutyHours: "07.00 - 16.00 WITA" };
-                    }
-                } catch(e) {
-                    state.schedule = defaultSchedule;
-                }
-            } else {
-                state.schedule = defaultSchedule;
+                    state = {
+                        ...state,
+                        ...parsed,
+                        locker: { ...state.locker, ...(parsed.locker || {}) },
+                        ptsp: { ...state.ptsp, ...(parsed.ptsp || {}) },
+                        wbk: { ...state.wbk, ...(parsed.wbk || {}) },
+                        slideSettings: { ...state.slideSettings, ...(parsed.slideSettings || {}) },
+                        timeSettings: { ...state.timeSettings, ...(parsed.timeSettings || {}) },
+                        layout: { ...state.layout, ...parsedLayout }
+                    };
+                } catch(e) {}
             }
 
+            if (!Array.isArray(state.schedule) || state.schedule.length === 0) {
+                state.schedule = JSON.parse(JSON.stringify(defaultSchedule));
+            }
+            if (!Array.isArray(state.services) || state.services.length === 0) {
+                state.services = JSON.parse(JSON.stringify(defaultServices));
+            }
+            if (!Array.isArray(state.guestFlow) || state.guestFlow.length === 0) {
+                state.guestFlow = JSON.parse(JSON.stringify(defaultGuestFlow));
+            }
+
+            applyAllLogos();
             syncCurrentDayHighlight();
             applyLayoutSettings();
             renderDashboard();
             updateYouTubeEmbed();
             setupSplitResizer();
+            if (state.layout.enable3D) initParticlesCanvas();
             startClock();
+            persistState();
+
+            const enabled = getEnabledSlideIndices();
+            currentSlideIdx = enabled[0];
+            updateSlideHeaderAndView(false);
+            restartSlideTimer();
+
+            syncFromGoogleSheets(true);
+            setInterval(() => syncFromGoogleSheets(false), SYNC_INTERVAL_MS);
         }
 
-        // Apply Saved Layout (Widths, Swapped Order, Expanded Video)
         function applyLayoutSettings() {
             const workspace = document.getElementById('main-workspace');
             const scheduleSec = document.getElementById('schedule-section');
@@ -638,6 +1707,18 @@
             const mediaSec = document.getElementById('media-section');
             const lockerBox = document.getElementById('locker-notice-box');
             const expandBtn = document.getElementById('btn-expand-video');
+            const btn3D = document.getElementById('btn-toggle-3d');
+
+            if (state.layout.enable3D === false) {
+                document.body.classList.add('eco-mode');
+                btn3D.classList.remove('bg-kejati-light');
+                btn3D.classList.add('bg-white', 'opacity-60');
+            } else {
+                document.body.classList.remove('eco-mode');
+                btn3D.classList.add('bg-kejati-light');
+                btn3D.classList.remove('bg-white', 'opacity-60');
+                if (!particleAnimFrame) initParticlesCanvas();
+            }
 
             if (state.layout.swapped) {
                 workspace.appendChild(mediaSec);
@@ -653,8 +1734,8 @@
             if (isDesktop) {
                 const mediaPct = Math.min(72, Math.max(22, Number(state.layout.mediaWidthPercent) || 37));
                 const schedulePct = 100 - mediaPct;
-                mediaSec.style.width = `calc(${mediaPct}% - 6px)`;
-                scheduleSec.style.width = `calc(${schedulePct}% - 6px)`;
+                mediaSec.style.width = `calc(${mediaPct}% - 7px)`;
+                scheduleSec.style.width = `calc(${schedulePct}% - 7px)`;
             } else {
                 mediaSec.style.width = '100%';
                 scheduleSec.style.width = '100%';
@@ -684,6 +1765,12 @@
 
         window.addEventListener('resize', applyLayoutSettings);
 
+        function toggle3DBackground() {
+            state.layout.enable3D = !state.layout.enable3D;
+            applyLayoutSettings();
+            persistState();
+        }
+
         function setMediaWidth(percent) {
             state.layout.mediaWidthPercent = percent;
             applyLayoutSettings();
@@ -703,16 +1790,12 @@
         }
 
         function resetLayout() {
-            state.layout = {
-                mediaWidthPercent: 37,
-                swapped: false,
-                videoExpanded: false
-            };
+            state.layout = { mediaWidthPercent: 37, swapped: false, videoExpanded: false, enable3D: false, tvSmoothV2: true };
             applyLayoutSettings();
             persistState();
         }
 
-        // Drag & Drop Main Panels (Swap Left/Right)
+        // Drag & Drop Main Panels
         let draggedPanel = null;
 
         function onPanelDragStart(e, panelName) {
@@ -721,7 +1804,7 @@
             e.dataTransfer.setData('text/plain', panelName);
         }
 
-        function onPanelDragEnd(e) {
+        function onPanelDragEnd() {
             draggedPanel = null;
             document.getElementById('schedule-section').classList.remove('panel-drag-over');
             document.getElementById('media-section').classList.remove('panel-drag-over');
@@ -742,20 +1825,18 @@
             e.preventDefault();
             document.getElementById('schedule-section').classList.remove('panel-drag-over');
             document.getElementById('media-section').classList.remove('panel-drag-over');
-            if (draggedPanel && draggedPanel !== targetPanel) {
-                swapMainPanels();
-            }
+            if (draggedPanel && draggedPanel !== targetPanel) swapMainPanels();
             draggedPanel = null;
         }
 
-        // Resizable Splitter Logic (Mouse & Touch)
+        // Resizable Splitter Logic
         function setupSplitResizer() {
             const resizer = document.getElementById('split-resizer');
             const workspace = document.getElementById('main-workspace');
             const iframes = document.querySelectorAll('iframe');
             let isResizing = false;
 
-            const startResize = (e) => {
+            const startResize = () => {
                 isResizing = true;
                 resizer.classList.add('active');
                 document.body.style.cursor = 'col-resize';
@@ -771,7 +1852,6 @@
 
                 let leftPercent = (offsetX / totalWidth) * 100;
                 let mediaPercent = state.layout.swapped ? leftPercent : (100 - leftPercent);
-
                 mediaPercent = Math.min(72, Math.max(22, Math.round(mediaPercent * 10) / 10));
                 state.layout.mediaWidthPercent = mediaPercent;
                 applyLayoutSettings();
@@ -790,13 +1870,9 @@
             window.addEventListener('mousemove', (e) => doResize(e.clientX));
             window.addEventListener('mouseup', stopResize);
 
-            resizer.addEventListener('touchstart', (e) => {
-                startResize(e);
-            }, { passive: true });
+            resizer.addEventListener('touchstart', () => startResize(), { passive: true });
             window.addEventListener('touchmove', (e) => {
-                if (isResizing && e.touches.length > 0) {
-                    doResize(e.touches[0].clientX);
-                }
+                if (isResizing && e.touches.length > 0) doResize(e.touches[0].clientX);
             }, { passive: true });
             window.addEventListener('touchend', stopResize);
         }
@@ -843,17 +1919,14 @@
             renderDashboard();
         }
 
-        // Highlight Active Day (Uses Effective Clock)
         function syncCurrentDayHighlight() {
             const daysMap = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
             const todayName = daysMap[getEffectiveNow().getDay()];
-
             state.schedule.forEach(day => {
                 day.isToday = (day.dayName.toUpperCase() === todayName);
             });
         }
 
-        // Realtime WITA Clock
         let lastTrackedDay = null;
 
         function startClock() {
@@ -873,11 +1946,7 @@
                 document.getElementById('clock-time').innerText = `${h}:${m}:${s}`;
 
                 const tzLabel = document.getElementById('clock-tz-label');
-                if (state.timeSettings && state.timeSettings.mode === 'manual') {
-                    tzLabel.innerText = 'WITA (MANUAL)';
-                } else {
-                    tzLabel.innerText = 'WITA (UTC+8)';
-                }
+                tzLabel.innerText = (state.timeSettings && state.timeSettings.mode === 'manual') ? 'WITA (MANUAL)' : 'WITA (UTC+8)';
 
                 if (lastTrackedDay !== null && lastTrackedDay !== currentDayIndex) {
                     syncCurrentDayHighlight();
@@ -890,102 +1959,150 @@
             setInterval(update, 1000);
         }
 
-        // Helper to extract YouTube Video / Playlist ID
-        function extractYouTubeId(urlOrId) {
-            if (!urlOrId) return '9689Bhx7N2A';
-            const clean = urlOrId.trim();
-            if (clean.includes('youtube.com') || clean.includes('youtu.be')) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-                const match = clean.match(regExp);
-                return (match && match[2].length === 11) ? match[2] : clean;
-            }
-            return clean;
-        }
-
-        function updateYouTubeEmbed() {
-            const iframe = document.getElementById('youtube-iframe');
-            const ytId = extractYouTubeId(state.youtubeVideoId);
-            
-            if (ytId.startsWith('PL')) {
-                iframe.src = `https://www.youtube.com/embed/videoseries?list=${ytId}&autoplay=1&mute=1&loop=1&enablejsapi=1`;
-            } else {
-                iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&enablejsapi=1`;
-            }
-        }
-
-        // Helper for default role label by index
         function getDefaultRoleLabel(idx) {
             if (idx === 0) return 'PENGAWAS PIKET';
             if (idx === 1) return 'WIRA PIKET';
             return 'ANGGOTA PIKET ' + (idx - 1);
         }
 
-        // Render Dashboard Cards
-        function renderDashboard() {
-            document.getElementById('display-office-name').innerText = state.officeName;
-            document.getElementById('running-text').innerText = state.runningText;
-            const dutyHoursText = (state.timeSettings && state.timeSettings.dutyHours) ? state.timeSettings.dutyHours : '07.00 - 16.00 WITA';
+        function renderServicesGrid() {
+            const container = document.getElementById('services-grid');
+            if (!container) return;
+            container.innerHTML = '';
 
+            const items = (Array.isArray(state.services) && state.services.length > 0) ? state.services : defaultServices;
+            items.forEach((srv, idx) => {
+                const themeKey = (srv.theme || 'hijau').toLowerCase();
+                const st = SERVICE_THEME_STYLES[themeKey] || SERVICE_THEME_STYLES.hijau;
+                const staggerClass = `stagger-${Math.min(idx + 2, 6)}`;
+
+                container.innerHTML += `
+                    <div class="stagger-card ${staggerClass} ${st.card} rounded-2xl p-3.5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${st.iconBg} text-white flex items-center justify-center text-lg shadow-md">
+                                    <i class="fa-solid ${st.icon}"></i>
+                                </div>
+                                ${srv.badge ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-full ${st.badge}">${escapeHtml(srv.badge)}</span>` : ''}
+                            </div>
+                            <h4 class="text-sm font-black font-outfit ${st.title} uppercase">${escapeHtml(srv.title)}</h4>
+                            <p class="text-[11px] ${st.desc} font-semibold mt-1 leading-snug">${escapeHtml(srv.description)}</p>
+                        </div>
+                        <span class="text-[10px] font-black uppercase mt-2 pt-1.5 border-t ${st.foot}">
+                            <i class="fa-solid ${st.footIcon} mr-1"></i>${escapeHtml(srv.footer)}
+                        </span>
+                    </div>
+                `;
+            });
+        }
+
+        function renderGuestFlowGrid() {
+            const container = document.getElementById('alur-grid');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const steps = (Array.isArray(state.guestFlow) && state.guestFlow.length > 0) ? state.guestFlow : defaultGuestFlow;
+            steps.forEach((item, idx) => {
+                const isGold = (item.theme || '').toLowerCase() === 'emas';
+                const icon = FLOW_ICONS[idx % FLOW_ICONS.length];
+                const staggerClass = `stagger-${Math.min(idx + 3, 6)}`;
+                const numLabel = item.step || String(idx + 1).padStart(2, '0');
+
+                container.innerHTML += `
+                    <div class="stagger-card ${staggerClass} ${isGold ? 'bg-amber-50 border-amber-300 border-b-amber-500' : 'bg-white border-emerald-200 border-b-emerald-500'} rounded-2xl p-3 border border-b-4 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="${isGold ? 'flow-step-badge-gold' : 'flow-step-badge'} w-8 h-8 rounded-xl text-white font-black font-outfit text-sm flex items-center justify-center">${escapeHtml(numLabel)}</span>
+                                <i class="fa-solid ${icon} ${isGold ? 'text-amber-600/80' : 'text-emerald-600/70'} text-xl"></i>
+                            </div>
+                            <h5 class="text-xs lg:text-sm font-black font-outfit uppercase ${isGold ? 'text-amber-950' : 'text-kejati-dark'}">${escapeHtml(item.title)}</h5>
+                            <p class="text-[11px] ${isGold ? 'text-slate-700' : 'text-slate-600'} font-semibold mt-1 leading-snug">${escapeHtml(item.description)}</p>
+                        </div>
+                        <span class="text-[9px] font-black uppercase ${isGold ? 'text-amber-800' : 'text-emerald-700'} mt-2">${escapeHtml(item.footer)}</span>
+                    </div>
+                `;
+            });
+        }
+
+        function renderDashboard() {
+            document.getElementById('display-badge-header').innerText = state.badgeHeader || 'KEJAKSAAN RI';
+            document.getElementById('display-subtitle-header').innerText = state.subtitleHeader || '';
+            document.getElementById('display-office-name').innerText = state.officeName || '';
+            document.getElementById('display-yt-title').innerText = state.youtubeTitle || '';
+            document.getElementById('display-yt-subtitle').innerText = state.youtubeSubtitle || '';
+            document.getElementById('display-loker-badge').innerText = state.locker.badge || '';
+            document.getElementById('display-loker-title').innerText = state.locker.title || '';
+            document.getElementById('display-loker-desc').innerText = state.locker.desc || '';
+            document.getElementById('running-text').innerText = state.runningText || '';
+
+            document.getElementById('display-ptsp-badge').innerText = state.ptsp.badge || '';
+            document.getElementById('display-ptsp-title').innerText = state.ptsp.title || '';
+            document.getElementById('display-ptsp-mon-thu').innerText = state.ptsp.monThu || '';
+            document.getElementById('display-ptsp-fri').innerText = state.ptsp.fri || '';
+            document.getElementById('display-hotline-label').innerText = state.ptsp.hotlineLabel || '';
+            document.getElementById('display-contact-hotline').innerText = state.ptsp.hotline || '';
+            document.getElementById('display-contact-web').innerText = state.ptsp.web || '';
+            document.getElementById('display-contact-address').innerText = state.ptsp.address || '';
+            renderServicesGrid();
+
+            document.getElementById('display-wbk-badge').innerText = state.wbk.badge || '';
+            document.getElementById('display-wbk-subbadge').innerText = state.wbk.subbadge || '';
+            document.getElementById('display-wbk-title').innerText = state.wbk.title || '';
+            document.getElementById('display-maklumat-text').innerText = state.wbk.maklumat || '';
+            document.getElementById('display-alur-title').innerText = state.wbk.alurTitle || '';
+            document.getElementById('display-alur-badge').innerText = state.wbk.alurBadge || '';
+            document.getElementById('display-j1-label').innerText = state.wbk.j1Label || '';
+            document.getElementById('display-j1-text').innerText = state.wbk.j1Text || '';
+            document.getElementById('display-j2-label').innerText = state.wbk.j2Label || '';
+            document.getElementById('display-j2-text').innerText = state.wbk.j2Text || '';
+            document.getElementById('display-j3-label').innerText = state.wbk.j3Label || '';
+            document.getElementById('display-j3-text').innerText = state.wbk.j3Text || '';
+            renderGuestFlowGrid();
+
+            const dutyHoursText = (state.timeSettings && state.timeSettings.dutyHours) ? state.timeSettings.dutyHours : '07.00 - 16.00 WITA';
             const gridContainer = document.getElementById('days-grid');
             gridContainer.innerHTML = '';
 
             state.schedule.forEach((dayData, dayIndex) => {
                 const isToday = dayData.isToday;
+                const staggerClass = `stagger-${Math.min(dayIndex + 1, 4)}`;
 
                 let officersHtml = '';
                 dayData.officers.forEach((off, idx) => {
                     const isPengawas = idx === 0 || off.type === 'pengawas';
                     const roleLabel = off.role || getDefaultRoleLabel(idx);
-                    const displayName = off.name && off.name.trim() !== '' ? off.name : '-';
-                    const displayNip = off.nip && off.nip.trim() !== '' ? off.nip : '-';
-                    const displayPosition = off.position && off.position.trim() !== '' ? off.position : '-';
+                    const displayName = off.name && off.name.trim() !== '' ? escapeHtml(off.name) : '-';
+                    const displayNip = off.nip && off.nip.trim() !== '' ? escapeHtml(off.nip) : '-';
+                    const displayPosition = off.position && off.position.trim() !== '' ? escapeHtml(off.position) : '-';
 
                     if (isPengawas) {
                         officersHtml += `
-                            <!-- PENGAWAS PIKET -->
-                            <div class="supervisor-row rounded-xl p-2.5 relative overflow-hidden shadow-xs">
+                            <div class="supervisor-row rounded-xl p-2.5 relative overflow-hidden">
                                 <div class="flex items-center justify-between mb-0.5">
-                                    <span class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-kejati-gold text-white tracking-wider flex items-center gap-1 shadow-xs">
-                                        ${roleLabel}
+                                    <span class="px-2 py-0.5 rounded-md text-[9px] font-black uppercase bg-gradient-to-r from-amber-700 to-amber-600 text-white tracking-wider flex items-center gap-1 shadow-xs">
+                                        ${escapeHtml(roleLabel)}
                                     </span>
                                 </div>
-                                
-                                <h3 class="text-xs lg:text-sm font-black text-kejati-dark truncate font-outfit uppercase leading-snug mt-0.5">
-                                    ${displayName}
-                                </h3>
-                                
-                                <div class="text-[10px] font-bold text-slate-600 font-mono">
-                                    <span>NIP: ${displayNip}</span>
-                                </div>
-                                <p class="text-[10px] text-kejati-gold font-bold truncate">
-                                    <i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${displayPosition}
-                                </p>
+                                <h3 class="text-xs lg:text-sm font-black text-kejati-dark truncate font-outfit uppercase leading-snug mt-0.5">${displayName}</h3>
+                                <div class="text-[10px] font-bold text-slate-600 font-mono"><span>NIP: ${displayNip}</span></div>
+                                <p class="text-[10px] text-kejati-gold font-bold truncate"><i class="fa-solid fa-user-shield text-[8px] mr-1"></i>${displayPosition}</p>
                             </div>
                         `;
                     } else {
                         officersHtml += `
-                            <!-- WIRA / ANGGOTA PIKET CARD -->
-                            <div class="officer-row rounded-xl p-2 relative shadow-xs">
+                            <div class="officer-row rounded-xl p-2 relative">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-black text-kejati-primary uppercase tracking-wider">
-                                        ${roleLabel}
-                                    </span>
+                                    <span class="text-[9px] font-black text-kejati-primary uppercase tracking-wider">${escapeHtml(roleLabel)}</span>
                                 </div>
-                                
-                                <h3 class="text-xs font-extrabold text-slate-800 truncate font-outfit uppercase leading-snug">
-                                    ${displayName}
-                                </h3>
-                                
-                                <div class="text-[10px] text-slate-500 font-mono font-semibold">
-                                    <span>NIP: ${displayNip}</span>
-                                </div>
+                                <h3 class="text-xs font-extrabold text-slate-800 truncate font-outfit uppercase leading-snug">${displayName}</h3>
+                                <div class="text-[10px] text-slate-500 font-mono font-semibold"><span>NIP: ${displayNip}</span></div>
                                 <p class="text-[10px] font-semibold text-emerald-700 truncate">${displayPosition}</p>
                             </div>
                         `;
                     }
                 });
 
-                const dayCardHtml = `
+                gridContainer.innerHTML += `
                     <div 
                         draggable="true"
                         ondragstart="onDayDragStart(event, ${dayIndex})"
@@ -994,77 +2111,62 @@
                         ondragleave="onDayDragLeave(event)"
                         ondrop="onDayDrop(event, ${dayIndex})"
                         title="Tarik untuk menggeser urutan kartu hari"
-                        class="bright-day-card rounded-2xl p-3 flex flex-col justify-between h-full relative cursor-grab active:cursor-grabbing ${isToday ? 'active-day animate-pulse-glow' : ''}"
+                        class="stagger-card ${staggerClass} bright-day-card rounded-2xl p-3 flex flex-col justify-between h-full relative cursor-grab active:cursor-grabbing ${isToday ? 'active-day' : ''}"
                     >
-                        
-                        <!-- Day Header -->
-                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b-2 border-kejati-border">
+                        <div class="flex items-center justify-between pb-2 mb-1.5 border-b-2 ${isToday ? 'border-amber-300' : 'border-kejati-border'}">
                             <div>
-                                <h2 class="text-lg lg:text-xl font-black font-outfit text-kejati-dark tracking-wider uppercase leading-none">
-                                    ${dayData.dayName}
-                                </h2>
-                                <span class="text-[10px] text-kejati-primary font-bold tracking-widest uppercase">${dayData.dateLabel || 'Jadwal Reguler'}</span>
+                                <h2 class="text-lg lg:text-xl font-black font-outfit text-kejati-dark tracking-wider uppercase leading-none">${escapeHtml(dayData.dayName)}</h2>
+                                <span class="text-[10px] text-kejati-primary font-bold tracking-widest uppercase">${escapeHtml(dayData.dateLabel || 'Jadwal Reguler')}</span>
                             </div>
-                            
                             ${isToday ? `
-                                <span class="px-2 py-0.5 rounded-full text-[9px] font-black bg-amber-500 text-white flex items-center gap-1 shadow-xs animate-badge-bounce">
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-white flex items-center gap-1 shadow-md border-b-2 border-amber-700 animate-badge-bounce">
                                     <i class="fa-solid fa-star text-[7px]"></i> HARI INI
                                 </span>
                             ` : `
-                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">4 Petugas</span>
+                                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider bg-white px-2 py-0.5 rounded-md border border-slate-200">${dayData.officers.length} Petugas</span>
                             `}
                         </div>
 
-                        <!-- 4 Officers List -->
-                        <div class="space-y-1.5 flex-grow flex flex-col justify-between">
-                            ${officersHtml}
-                        </div>
+                        <div class="space-y-1.5 flex-grow flex flex-col justify-between relative z-10">${officersHtml}</div>
 
-                        <!-- Footer Status Indicator -->
-                        <div class="mt-2 pt-1.5 border-t border-slate-200 flex justify-between items-center text-[10px] font-bold text-slate-500">
-                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>${dutyHoursText}</span>
-                            <span class="font-extrabold uppercase text-kejati-emerald flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Siaga
+                        <div class="mt-2 pt-1.5 border-t border-slate-200/80 flex justify-between items-center text-[10px] font-bold text-slate-600 relative z-10">
+                            <span><i class="fa-regular fa-clock text-kejati-primary mr-1"></i>${escapeHtml(dutyHoursText)}</span>
+                            <span class="font-extrabold uppercase text-kejati-emerald flex items-center gap-1.5">
+                                <span class="inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                Siaga
                             </span>
                         </div>
-
                     </div>
                 `;
-                gridContainer.innerHTML += dayCardHtml;
             });
         }
 
-        // Toggle Manual Time Inputs in Modal
+        // ========== ADMIN MODAL ==========
         function toggleManualTimeInputs() {
             const mode = document.getElementById('input-clock-mode').value;
-            const dateInput = document.getElementById('input-manual-date');
-            const timeInput = document.getElementById('input-manual-time');
             const isManual = mode === 'manual';
-            dateInput.disabled = !isManual;
-            timeInput.disabled = !isManual;
+            document.getElementById('input-manual-date').disabled = !isManual;
+            document.getElementById('input-manual-time').disabled = !isManual;
         }
 
-        // Admin Settings Modal Functions
         function openAdminModal() {
-            document.getElementById('input-office-name').value = state.officeName;
-            document.getElementById('input-youtube-id').value = state.youtubeVideoId || '';
-            document.getElementById('input-running-text').value = state.runningText;
+            isModalOpen = true;
+            restartSlideTimer();
 
             const ts = state.timeSettings || { mode: 'auto', offsetMs: 0, dutyHours: '07.00 - 16.00 WITA' };
             document.getElementById('input-clock-mode').value = ts.mode || 'auto';
             document.getElementById('input-duty-hours').value = ts.dutyHours || '07.00 - 16.00 WITA';
 
-            const currentDisplayNow = getEffectiveNow();
-            const yyyy = currentDisplayNow.getFullYear();
-            const mm = String(currentDisplayNow.getMonth() + 1).padStart(2, '0');
-            const dd = String(currentDisplayNow.getDate()).padStart(2, '0');
-            const hh = String(currentDisplayNow.getHours()).padStart(2, '0');
-            const min = String(currentDisplayNow.getMinutes()).padStart(2, '0');
-            const ss = String(currentDisplayNow.getSeconds()).padStart(2, '0');
+            const now = getEffectiveNow();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            const hh = String(now.getHours()).padStart(2, '0');
+            const min = String(now.getMinutes()).padStart(2, '0');
+            const ssSec = String(now.getSeconds()).padStart(2, '0');
 
-            // Pre-fill in readable DD-MM-YYYY and HH:MM:SS format so user can easily type over
             document.getElementById('input-manual-date').value = `${dd}-${mm}-${yyyy}`;
-            document.getElementById('input-manual-time').value = `${hh}:${min}:${ss}`;
+            document.getElementById('input-manual-time').value = `${hh}:${min}:${ssSec}`;
             toggleManualTimeInputs();
 
             renderAdminForm();
@@ -1077,7 +2179,11 @@
         function closeAdminModal() {
             const modal = document.getElementById('admin-modal');
             modal.classList.add('opacity-0');
-            setTimeout(() => modal.classList.add('hidden'), 300);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                isModalOpen = false;
+                restartSlideTimer();
+            }, 200);
         }
 
         function renderAdminForm() {
@@ -1092,38 +2198,35 @@
                     officersFormHtml += `
                         <div class="p-3 ${isPengawas ? 'bg-amber-50 border border-amber-300' : 'bg-white border border-slate-200'} rounded-xl space-y-2 shadow-xs">
                             <span class="text-[10px] font-black ${isPengawas ? 'text-amber-700' : 'text-kejati-primary'} uppercase">
-                                ${formSectionTitle}
+                                ${escapeHtml(formSectionTitle)}
                             </span>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Nama Lengkap & Gelar</label>
-                                    <input type="text" placeholder="Isi nama petugas..." value="${off.name || ''}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi nama petugas..." value="${escapeHtml(off.name || '')}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'name', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">NIP / NRP</label>
-                                    <input type="text" placeholder="Isi NIP / NRP..." value="${off.nip || ''}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi NIP / NRP..." value="${escapeHtml(off.nip || '')}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'nip', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-600 mb-0.5">Pangkat / Jabatan / Regu</label>
-                                    <input type="text" placeholder="Isi jabatan / bagian..." value="${off.position || ''}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
+                                    <input type="text" placeholder="Isi jabatan / bagian..." value="${escapeHtml(off.position || '')}" onchange="updateOfficerData(${dayIdx}, ${offIdx}, 'position', this.value)" class="w-full bg-slate-50 border border-slate-300 rounded px-2.5 py-1.5 text-xs font-bold text-slate-800">
                                 </div>
                             </div>
                         </div>
                     `;
                 });
 
-                const dayBlockHtml = `
+                container.innerHTML += `
                     <div class="bg-white p-4 rounded-xl border border-kejati-border shadow-sm space-y-3">
                         <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                            <input type="text" value="${dayData.dayName}" onchange="updateDayName(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-kejati-primary font-black text-sm rounded px-2.5 py-1 uppercase font-outfit">
-                            <input type="text" value="${dayData.dateLabel || ''}" placeholder="Label Hari" onchange="updateDayLabel(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-slate-600 text-xs font-bold rounded px-2 py-1">
+                            <input type="text" value="${escapeHtml(dayData.dayName)}" onchange="updateDayName(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-kejati-primary font-black text-sm rounded px-2.5 py-1 uppercase font-outfit">
+                            <input type="text" value="${escapeHtml(dayData.dateLabel || '')}" placeholder="Label Hari" onchange="updateDayLabel(${dayIdx}, this.value)" class="bg-slate-100 border border-slate-300 text-slate-600 text-xs font-bold rounded px-2 py-1">
                         </div>
-                        <div class="space-y-2">
-                            ${officersFormHtml}
-                        </div>
+                        <div class="space-y-2">${officersFormHtml}</div>
                     </div>
                 `;
-                container.innerHTML += dayBlockHtml;
             });
         }
 
@@ -1150,15 +2253,11 @@
                 const targetDate = parseManualDateTime(dateVal, timeVal);
 
                 if (!targetDate) {
-                    alert('Format Tanggal atau Jam Manual tidak valid.\n\nContoh Tanggal: 24-11-2026\nContoh Jam: 07:30:00 atau 07:30');
+                    alert('Format Tanggal atau Jam Manual tidak valid.\n\nContoh Tanggal: 26-11-2026\nContoh Jam: 07:30:00 atau 07:30');
                     return;
                 }
                 offsetMs = targetDate.getTime() - Date.now();
             }
-
-            state.officeName = document.getElementById('input-office-name').value;
-            state.youtubeVideoId = document.getElementById('input-youtube-id').value;
-            state.runningText = document.getElementById('input-running-text').value;
 
             state.timeSettings = {
                 mode: clockMode,
@@ -1169,18 +2268,14 @@
             syncCurrentDayHighlight();
             persistState();
             renderDashboard();
-            updateYouTubeEmbed();
             closeAdminModal();
         }
 
-        // Fullscreen Toggle
         function toggleFullscreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => console.error(err));
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                if (document.exitFullscreen) document.exitFullscreen();
             }
         }
 
